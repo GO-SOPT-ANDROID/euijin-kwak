@@ -16,6 +16,7 @@
     <string name="sign_up_error_message">정보를 다시 입력해주세요</string>
     <string name="sign_up_id_error_message">아이디는 6자 이상이어야 합니다.</string>
     <string name="sign_up_password_error_message">비밀번호는 8자 이상이어야 합니다.</string>
+    <string name="sign_up_not_complete_message">회원가입을 먼저 진행해주세요.</string>
 
     <string name="user_name_null">이름이 없습니다.</string>
     <string name="user_specialty_null">특기가 없습니다</string>

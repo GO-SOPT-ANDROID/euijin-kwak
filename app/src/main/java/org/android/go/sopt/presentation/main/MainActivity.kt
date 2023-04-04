@@ -1,9 +1,13 @@
-package org.android.go.sopt
+package org.android.go.sopt.presentation.main
 
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import org.android.go.sopt.util.IntentKey
+import org.android.go.sopt.R
+import org.android.go.sopt.model.UserData
 import org.android.go.sopt.databinding.ActivityMainBinding
+import org.android.go.sopt.presentation.base.BaseActivity
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun setBinding(layoutInflater: LayoutInflater): ActivityMainBinding {

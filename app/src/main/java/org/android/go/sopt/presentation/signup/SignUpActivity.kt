@@ -1,16 +1,19 @@
-package org.android.go.sopt
+package org.android.go.sopt.presentation.signup
 
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
+import org.android.go.sopt.util.IntentKey
+import org.android.go.sopt.R
+import org.android.go.sopt.model.UserData
 import org.android.go.sopt.databinding.ActivitySignUpBinding
+import org.android.go.sopt.presentation.base.BaseActivity
+import org.android.go.sopt.presentation.login.LoginActivity
+import org.android.go.sopt.showSnack
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
-
 
     override fun setBinding(layoutInflater: LayoutInflater): ActivitySignUpBinding {
         return ActivitySignUpBinding.inflate(layoutInflater)
@@ -40,14 +43,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
                     }
                 }
 
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             })
         }
@@ -63,14 +59,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
                     }
                 }
 
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
-                }
-
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             })
         }
@@ -84,19 +73,12 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
                 etName.text.toString(),
                 etSpecialty.text.toString()
             )
-            val intent = Intent(this@SignUpActivity, LoginActivity::class.java).apply {
+            Intent(this@SignUpActivity, LoginActivity::class.java).apply {
                 putExtra(IntentKey.USER_DATA, userData)
-            }
-            Toast.makeText(
-                this@SignUpActivity,
-                getString(R.string.sign_up_complete),
-                Toast.LENGTH_SHORT
-            ).show()
-            setResult(RESULT_OK, intent)
+            }.let { setResult(RESULT_OK, it) }
             finish()
         } else {
-            Snackbar.make(root, getString(R.string.sign_up_error_message), Snackbar.LENGTH_SHORT)
-                .show()
+            root.showSnack(getString(R.string.sign_up_error_message))
         }
     }
 }
