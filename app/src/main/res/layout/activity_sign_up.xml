@@ -27,94 +27,69 @@
 
         <TextView
             android:id="@+id/tvId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            style="@style/Text_SignUp_Style"
             android:text="@string/id"
-            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
         <EditText
             android:id="@+id/etId"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            style="@style/EditText_Style"
             android:hint="@string/please_input_id"
             android:importantForAutofill="no"
             android:inputType="text"
-            android:maxLength="10"
-            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="@id/tvTitle"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/tvId" />
 
         <TextView
             android:id="@+id/tvPassWord"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            style="@style/Text_SignUp_Style"
             android:text="@string/password"
-            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/etId" />
 
         <EditText
             android:id="@+id/etPassword"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            style="@style/EditText_Style"
             android:hint="@string/please_input_password"
             android:importantForAutofill="no"
             android:inputType="textPassword"
             android:maxLength="12"
-            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="@+id/tvTitle"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/tvPassWord" />
 
         <TextView
             android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            style="@style/Text_SignUp_Style"
             android:text="@string/name"
-            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/etPassword" />
 
         <EditText
             android:id="@+id/etName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            style="@style/EditText_Style"
             android:hint="@string/please_input_name"
             android:importantForAutofill="no"
             android:inputType="text"
-            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="@+id/tvTitle"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/tvName" />
 
         <TextView
             android:id="@+id/tvSpecialty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            style="@style/Text_SignUp_Style"
             android:text="@string/specialty"
-            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/etName" />
 
         <EditText
             android:id="@+id/etSpecialty"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            style="@style/EditText_Style"
             android:hint="@string/please_input_specialty"
             android:importantForAutofill="no"
             android:inputType="text"
-            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="@+id/tvTitle"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/tvSpecialty" />
