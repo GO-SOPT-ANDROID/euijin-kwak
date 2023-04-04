@@ -12,6 +12,7 @@
     <string name="specialty">특기</string>
     <string name="please_input_specialty">특기를 입력해주세요</string>
     <string name="sign_up_complete">회원가입 완료</string>
+    <string name="login_complete">로그인에 성공했습니다.</string>
 
     <string name="sign_up_error_message">정보를 다시 입력해주세요</string>
     <string name="sign_up_id_error_message">아이디는 6자 이상이어야 합니다.</string>

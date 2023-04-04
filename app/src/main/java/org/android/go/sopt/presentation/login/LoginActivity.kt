@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import org.android.go.sopt.util.IntentKey
 import org.android.go.sopt.R
 import org.android.go.sopt.model.UserData
 import org.android.go.sopt.databinding.ActivityLoginBinding
+import org.android.go.sopt.extension.showToast
 import org.android.go.sopt.presentation.main.MainActivity
 import org.android.go.sopt.presentation.signup.SignUpActivity
 import org.android.go.sopt.presentation.base.BaseActivity
@@ -43,6 +45,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         btLogin.setOnClickListener {
             userData?.let { userData ->
                 if ((etId.text.toString() == userData.id) && (etPassword.text.toString() == userData.password)) {
+                    showToast(getString(R.string.login_complete))
                     Intent(this@LoginActivity, MainActivity::class.java).apply {
                         putExtra(IntentKey.USER_DATA, userData)
                     }.let(::startActivity)
