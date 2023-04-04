@@ -66,7 +66,7 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
     }
 
     private fun checkSignData() = with(binding) {
-        if (etId.error.isNullOrEmpty() && etPassword.error.isNullOrEmpty()) {
+        if (etId.error.isNullOrEmpty() && etPassword.error.isNullOrEmpty() && etId.text.isNotEmpty() && etPassword.text.isNotEmpty()) {
             val userData = UserData(
                 etId.text.toString(),
                 etPassword.text.toString(),
