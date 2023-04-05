@@ -8,7 +8,7 @@ import android.view.MotionEvent
 import androidx.activity.result.contract.ActivityResultContracts
 import org.android.go.sopt.util.IntentKey
 import org.android.go.sopt.R
-import org.android.go.sopt.model.UserData
+import org.android.go.sopt.data.model.UserData
 import org.android.go.sopt.databinding.ActivityLoginBinding
 import org.android.go.sopt.extension.hideSoftKeyboard
 import org.android.go.sopt.extension.showToast

@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import org.android.go.sopt.util.IntentKey
 import org.android.go.sopt.R
-import org.android.go.sopt.model.UserData
+import org.android.go.sopt.data.model.UserData
 import org.android.go.sopt.databinding.ActivityMainBinding
 import org.android.go.sopt.presentation.base.BaseActivity
 

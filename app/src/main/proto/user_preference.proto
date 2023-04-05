@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_package = "org.android.go.sopt";
+option java_multiple_files = true;
+
+message UserPreferences {
+  string id = 1;
+  string password = 2;
+  string name = 3;
+  string specialty = 4;
+}
+
+option java_outer_classname = "DataProto";
+
+
