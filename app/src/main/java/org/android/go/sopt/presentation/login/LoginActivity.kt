@@ -4,20 +4,20 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Toast
+import android.view.MotionEvent
 import androidx.activity.result.contract.ActivityResultContracts
 import org.android.go.sopt.util.IntentKey
 import org.android.go.sopt.R
 import org.android.go.sopt.model.UserData
 import org.android.go.sopt.databinding.ActivityLoginBinding
+import org.android.go.sopt.extension.hideSoftKeyboard
 import org.android.go.sopt.extension.showToast
 import org.android.go.sopt.presentation.main.MainActivity
 import org.android.go.sopt.presentation.signup.SignUpActivity
 import org.android.go.sopt.presentation.base.BaseActivity
-import org.android.go.sopt.showSnack
+import org.android.go.sopt.extension.showSnack
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
-
     private var userData: UserData? = null
 
     private val signUpLauncher =
@@ -39,6 +39,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViews()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        currentFocus?.hideSoftKeyboard()
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun initViews() = with(binding) {

@@ -5,13 +5,15 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import org.android.go.sopt.util.IntentKey
 import org.android.go.sopt.R
 import org.android.go.sopt.model.UserData
 import org.android.go.sopt.databinding.ActivitySignUpBinding
+import org.android.go.sopt.extension.hideSoftKeyboard
 import org.android.go.sopt.presentation.base.BaseActivity
 import org.android.go.sopt.presentation.login.LoginActivity
-import org.android.go.sopt.showSnack
+import org.android.go.sopt.extension.showSnack
 
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
 
@@ -22,6 +24,11 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViews()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        currentFocus?.hideSoftKeyboard()
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun initViews() = with(binding) {
