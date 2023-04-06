@@ -1,34 +1,58 @@
 package org.android.go.sopt.presentation.signup
 
 import android.content.Intent
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import org.android.go.sopt.util.IntentKey
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.android.go.sopt.R
-import org.android.go.sopt.data.model.UserData
+import org.android.go.sopt.data.model.toUserData
 import org.android.go.sopt.databinding.ActivitySignUpBinding
+import org.android.go.sopt.domain.repository.UserEntity
 import org.android.go.sopt.extension.hideSoftKeyboard
-import org.android.go.sopt.presentation.base.BaseActivity
-import org.android.go.sopt.presentation.login.LoginActivity
 import org.android.go.sopt.extension.showSnack
+import org.android.go.sopt.presentation.base.BaseViewModelActivity
+import org.android.go.sopt.presentation.login.LoginActivity
+import org.android.go.sopt.util.IntentKey
 
 @AndroidEntryPoint
-class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
+class SignUpActivity : BaseViewModelActivity<ActivitySignUpBinding, SignUpViewModel>() {
 
-    private val viewModel: SignUpViewModel by viewModels()
+    override val viewModel: SignUpViewModel by viewModels()
+    override val errorHandler: (() -> Unit) = {
+        binding.root.showSnack(getString(R.string.sign_up_error_message))
+    }
 
     override fun setBinding(layoutInflater: LayoutInflater): ActivitySignUpBinding {
         return ActivitySignUpBinding.inflate(layoutInflater)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initViews()
+    override fun initObserve() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.signUpState.collectLatest { state ->
+                    when (state) {
+                        is SignUpState.UnInitialized -> {
+                            initViews()
+                        }
+                        is SignUpState.SuccessSaveUser -> {
+                            finish()
+                        }
+                        is SignUpState.Error -> {
+                            binding.root.showSnack(getString(R.string.sign_up_error_message))
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
@@ -79,16 +103,13 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
 
     private fun checkSignData() = with(binding) {
         if (etId.error.isNullOrEmpty() && etPassword.error.isNullOrEmpty() && etId.text.isNotEmpty() && etPassword.text.isNotEmpty()) {
-            val userData = UserData(
+            val userData = UserEntity(
                 etId.text.toString(),
                 etPassword.text.toString(),
                 etName.text.toString(),
                 etSpecialty.text.toString()
             )
-            Intent(this@SignUpActivity, LoginActivity::class.java).apply {
-                putExtra(IntentKey.USER_DATA, userData)
-            }.let { setResult(RESULT_OK, it) }
-            finish()
+            viewModel.updateUser(userData)
         } else {
             root.showSnack(getString(R.string.sign_up_error_message))
         }
