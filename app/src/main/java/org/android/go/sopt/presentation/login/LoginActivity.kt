@@ -4,13 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.android.go.sopt.R
 import org.android.go.sopt.data.model.UserData
 import org.android.go.sopt.data.model.toUserData
@@ -40,7 +34,14 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
         viewModel.loginState.observe(this) {
             when (it) {
                 is LoginState.UnInitialized -> {
-                    initViews()
+                    viewModel.getAutoLogin()
+                }
+                is LoginState.SuccessGetAutoLogin -> {
+                    if (it.isAutoLogin) {
+                        Intent(this, MainActivity::class.java).let(::startActivity)
+                    } else {
+                        initViews()
+                    }
                 }
                 is LoginState.SuccessGetUserData -> {
                     checkLoginData(it.user.toUserData())
@@ -48,10 +49,10 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
                 is LoginState.LoginFail -> {
                     binding.root.showSnack(getString(R.string.login_not_complete_message))
                 }
-
                 is LoginState.Error -> {
                     binding.root.showErrorSnack()
                 }
+
             }
 
         }
@@ -65,6 +66,7 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
 
     private fun initViews() = with(binding) {
         btLogin.setOnClickListener {
+            viewModel.setAutoLogin(cbAutoLogin.isChecked)
             viewModel.readUser()
         }
 

@@ -10,6 +10,8 @@ message UserPreferences {
   string specialty = 4;
 }
 
+
+
 option java_outer_classname = "DataProto";
 
 

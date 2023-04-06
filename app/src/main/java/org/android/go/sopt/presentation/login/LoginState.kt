@@ -9,6 +9,10 @@ sealed class LoginState {
         val user: UserEntity
     ) : LoginState()
 
+    data class SuccessGetAutoLogin(
+        val isAutoLogin: Boolean
+    ) : LoginState()
+
     object LoginFail : LoginState()
 
     object Error : LoginState()

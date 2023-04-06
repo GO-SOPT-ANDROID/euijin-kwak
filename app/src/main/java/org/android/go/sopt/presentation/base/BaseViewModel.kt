@@ -35,7 +35,7 @@ abstract class BaseViewModel: ViewModel() {
     }
 
     fun ViewModel.launch(dispatcher: CoroutineDispatcher = Dispatchers.Main, block: suspend CoroutineScope.() -> Unit) {
-        viewModelScope.launch(dispatcher + exceptionHandler) {
+        viewModelScope.launch(dispatcher) {
             block()
         }
     }

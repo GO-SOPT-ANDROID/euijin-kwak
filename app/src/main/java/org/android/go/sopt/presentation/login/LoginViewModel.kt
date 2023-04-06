@@ -31,4 +31,22 @@ class LoginViewModel @Inject constructor(private val repository: UserRepository)
             }
         }
     }
+
+    fun setAutoLogin(isAutoLogin: Boolean) {
+        launch {
+            withContext(Dispatchers.IO) {
+                repository.setAutoLogin(isAutoLogin)
+            }
+        }
+    }
+
+    fun getAutoLogin() {
+        launch {
+            withContext(Dispatchers.IO) {
+                repository.getAutoLogin().collectLatest {
+                    _loginState.postValue(LoginState.SuccessGetAutoLogin(it))
+                }
+            }
+        }
+    }
 }
