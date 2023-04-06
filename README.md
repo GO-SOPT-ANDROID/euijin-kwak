@@ -4,6 +4,7 @@
 
 ### 1주차 
 [Activity 생명 주기 정리](https://kwakeuijin-programing-study.tistory.com/35)
+[Activity Task 정리](https://kwakeuijin-programing-study.tistory.com/36)
 
 ## 템플릿 설명
 레포지터리에는 총 2개의 브랜치가 있습니다.
