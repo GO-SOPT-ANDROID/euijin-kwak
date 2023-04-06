@@ -4,10 +4,13 @@ import androidx.datastore.core.DataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.android.go.sopt.UserPreferences
+import org.android.go.sopt.data.model.UserData
+import org.android.go.sopt.data.model.toUserEntity
 import org.android.go.sopt.domain.repository.UserEntity
 import org.android.go.sopt.domain.repository.UserRepository
+import javax.inject.Inject
 
-class UserRepositoryImpl(
+class UserRepositoryImpl @Inject constructor(
     private val protoDataStore: DataStore<UserPreferences>,
 ): UserRepository {
     override suspend fun updateUser(user: UserEntity) {
@@ -23,7 +26,10 @@ class UserRepositoryImpl(
 
     override suspend fun readUser(): Flow<UserEntity> {
         return protoDataStore.data.map {
-            UserEntity(it.id, it.password, it.name, it.specialty)
+            if (it.id.isEmpty() && it.password.isEmpty()) {
+                return@map UserEntity("-1", "-1", "", "")
+            }
+            UserData(it.id, it.password, it.name, it.specialty).toUserEntity()
         }
     }
 }
