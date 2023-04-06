@@ -6,16 +6,21 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import androidx.activity.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import org.android.go.sopt.util.IntentKey
 import org.android.go.sopt.R
-import org.android.go.sopt.model.UserData
+import org.android.go.sopt.data.model.UserData
 import org.android.go.sopt.databinding.ActivitySignUpBinding
 import org.android.go.sopt.extension.hideSoftKeyboard
 import org.android.go.sopt.presentation.base.BaseActivity
 import org.android.go.sopt.presentation.login.LoginActivity
 import org.android.go.sopt.extension.showSnack
 
+@AndroidEntryPoint
 class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
+
+    private val viewModel: SignUpViewModel by viewModels()
 
     override fun setBinding(layoutInflater: LayoutInflater): ActivitySignUpBinding {
         return ActivitySignUpBinding.inflate(layoutInflater)
