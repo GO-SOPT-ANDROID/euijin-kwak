@@ -28,20 +28,16 @@ class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>()
         get() = { binding.root.showErrorSnack() }
 
     override fun initObserve() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.mainState.collectLatest {state ->
-                    when (state) {
-                        is MainState.UnInitialized -> {
-                            viewModel.readUser()
-                        }
-                        is MainState.SuccessUserData -> {
-                            bindViews(state.user.toUserData())
-                        }
-                        is MainState.Error -> {
-                            binding.root.showSnack(getString(R.string.error_message))
-                        }
-                    }
+        viewModel.mainState.observe(this) { state ->
+            when (state) {
+                is MainState.UnInitialized -> {
+                    viewModel.readUser()
+                }
+                is MainState.SuccessUserData -> {
+                    bindViews(state.user.toUserData())
+                }
+                is MainState.Error -> {
+                    binding.root.showSnack(getString(R.string.error_message))
                 }
             }
         }

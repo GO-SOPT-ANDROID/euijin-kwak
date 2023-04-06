@@ -37,26 +37,23 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
     }
 
     override fun initObserve() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.loginState.collectLatest {
-                    when (it) {
-                        is LoginState.UnInitialized -> {
-                            initViews()
-                        }
-                        is LoginState.SuccessGetUserData -> {
-                            checkLoginData(it.user.toUserData())
-                        }
-                        is LoginState.LoginFail -> {
-                            binding.root.showSnack(getString(R.string.login_not_complete_message))
-                        }
+        viewModel.loginState.observe(this) {
+            when (it) {
+                is LoginState.UnInitialized -> {
+                    initViews()
+                }
+                is LoginState.SuccessGetUserData -> {
+                    checkLoginData(it.user.toUserData())
+                }
+                is LoginState.LoginFail -> {
+                    binding.root.showSnack(getString(R.string.login_not_complete_message))
+                }
 
-                        is LoginState.Error -> {
-                            binding.root.showErrorSnack()
-                        }
-                    }
+                is LoginState.Error -> {
+                    binding.root.showErrorSnack()
                 }
             }
+
         }
 
     }
@@ -90,7 +87,8 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
         showToast(getString(R.string.login_complete))
         Intent(this@LoginActivity, MainActivity::class.java).apply {
             putExtra(IntentKey.USER_DATA, userData)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }.let(::startActivity)
-        finish()
     }
 }

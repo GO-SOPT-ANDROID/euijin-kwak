@@ -36,20 +36,16 @@ class SignUpActivity : BaseViewModelActivity<ActivitySignUpBinding, SignUpViewMo
     }
 
     override fun initObserve() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.signUpState.collectLatest { state ->
-                    when (state) {
-                        is SignUpState.UnInitialized -> {
-                            initViews()
-                        }
-                        is SignUpState.SuccessSaveUser -> {
-                            finish()
-                        }
-                        is SignUpState.Error -> {
-                            binding.root.showSnack(getString(R.string.sign_up_error_message))
-                        }
-                    }
+        viewModel.signUpState.observe(this) { state ->
+            when (state) {
+                is SignUpState.UnInitialized -> {
+                    initViews()
+                }
+                is SignUpState.SuccessSaveUser -> {
+                    finish()
+                }
+                is SignUpState.Error -> {
+                    binding.root.showSnack(getString(R.string.sign_up_error_message))
                 }
             }
         }
