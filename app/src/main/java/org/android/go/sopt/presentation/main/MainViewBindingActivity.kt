@@ -1,15 +1,15 @@
 package org.android.go.sopt.presentation.main
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import org.android.go.sopt.util.IntentKey
 import org.android.go.sopt.R
-import org.android.go.sopt.model.UserData
 import org.android.go.sopt.databinding.ActivityMainBinding
-import org.android.go.sopt.presentation.base.BaseActivity
+import org.android.go.sopt.extension.getParcelable
+import org.android.go.sopt.model.UserData
+import org.android.go.sopt.presentation.base.BaseViewBindingActivity
+import org.android.go.sopt.util.IntentKey
 
-class MainActivity : BaseActivity<ActivityMainBinding>() {
+class MainViewBindingActivity : BaseViewBindingActivity<ActivityMainBinding>() {
     override fun setBinding(layoutInflater: LayoutInflater): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
     }
@@ -20,11 +20,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun initData() {
-        val userData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(IntentKey.USER_DATA, UserData::class.java)
-        } else {
-            intent.getParcelableExtra(IntentKey.USER_DATA)
-        }
+        val userData = intent.getParcelable(IntentKey.USER_DATA, UserData::class.java)
         bindViews(userData)
     }
 

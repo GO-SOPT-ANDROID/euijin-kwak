@@ -9,11 +9,11 @@ import org.android.go.sopt.util.IntentKey
 import org.android.go.sopt.R
 import org.android.go.sopt.model.UserData
 import org.android.go.sopt.databinding.ActivitySignUpBinding
-import org.android.go.sopt.presentation.base.BaseActivity
-import org.android.go.sopt.presentation.login.LoginActivity
+import org.android.go.sopt.presentation.base.BaseViewBindingActivity
+import org.android.go.sopt.presentation.login.LoginViewBindingActivity
 import org.android.go.sopt.showSnack
 
-class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
+class SignUpViewBindingActivity : BaseViewBindingActivity<ActivitySignUpBinding>() {
 
     override fun setBinding(layoutInflater: LayoutInflater): ActivitySignUpBinding {
         return ActivitySignUpBinding.inflate(layoutInflater)
@@ -73,12 +73,12 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>() {
                 etName.text.toString(),
                 etSpecialty.text.toString()
             )
-            Intent(this@SignUpActivity, LoginActivity::class.java).apply {
+            Intent(this@SignUpViewBindingActivity, LoginViewBindingActivity::class.java).apply {
                 putExtra(IntentKey.USER_DATA, userData)
             }.let { setResult(RESULT_OK, it) }
             finish()
         } else {
-            root.showSnack(getString(R.string.sign_up_error_message))
+            root.showSnack(R.string.sign_up_error_message)
         }
     }
 }

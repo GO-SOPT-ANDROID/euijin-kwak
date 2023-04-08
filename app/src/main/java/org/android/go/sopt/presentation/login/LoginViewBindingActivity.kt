@@ -1,34 +1,29 @@
 package org.android.go.sopt.presentation.login
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import org.android.go.sopt.util.IntentKey
 import org.android.go.sopt.R
-import org.android.go.sopt.model.UserData
 import org.android.go.sopt.databinding.ActivityLoginBinding
+import org.android.go.sopt.extension.getParcelable
 import org.android.go.sopt.extension.showToast
-import org.android.go.sopt.presentation.main.MainActivity
-import org.android.go.sopt.presentation.signup.SignUpActivity
-import org.android.go.sopt.presentation.base.BaseActivity
+import org.android.go.sopt.model.UserData
+import org.android.go.sopt.presentation.base.BaseViewBindingActivity
+import org.android.go.sopt.presentation.main.MainViewBindingActivity
+import org.android.go.sopt.presentation.signup.SignUpViewBindingActivity
 import org.android.go.sopt.showSnack
+import org.android.go.sopt.util.IntentKey
 
-class LoginActivity : BaseActivity<ActivityLoginBinding>() {
+class LoginViewBindingActivity : BaseViewBindingActivity<ActivityLoginBinding>() {
 
     private var userData: UserData? = null
 
     private val signUpLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                userData = if (Build.VERSION.SDK_INT >= 33) {
-                    result.data?.getParcelableExtra(IntentKey.USER_DATA, UserData::class.java)
-                } else {
-                    result.data?.getParcelableExtra(IntentKey.USER_DATA)
-                }
-                binding.root.showSnack(getString(R.string.sign_up_complete))
+                userData = result.data?.getParcelable(IntentKey.USER_DATA, UserData::class.java)
+                binding.root.showSnack(R.string.sign_up_complete)
             }
         }
 
@@ -45,16 +40,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         btLogin.setOnClickListener {
             userData?.let { userData ->
                 if ((etId.text.toString() == userData.id) && (etPassword.text.toString() == userData.password)) {
-                    showToast(getString(R.string.login_complete))
-                    Intent(this@LoginActivity, MainActivity::class.java).apply {
+                    showToast(R.string.login_complete)
+                    Intent(this@LoginViewBindingActivity, MainViewBindingActivity::class.java).apply {
                         putExtra(IntentKey.USER_DATA, userData)
                     }.let(::startActivity)
                 }
-            } ?: root.showSnack(getString(R.string.sign_up_not_complete_message))
+            } ?: root.showSnack(R.string.sign_up_not_complete_message)
         }
 
         btSignUp.setOnClickListener {
-            Intent(this@LoginActivity, SignUpActivity::class.java).let {
+            Intent(this@LoginViewBindingActivity, SignUpViewBindingActivity::class.java).let {
                 signUpLauncher.launch(it)
             }
         }
