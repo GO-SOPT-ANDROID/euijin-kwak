@@ -2,23 +2,17 @@ package org.android.go.sopt.presentation.main
 
 import android.view.LayoutInflater
 import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.android.go.sopt.R
 import org.android.go.sopt.data.model.UserData
 import org.android.go.sopt.data.model.toUserData
 import org.android.go.sopt.databinding.ActivityMainBinding
 import org.android.go.sopt.extension.showErrorSnack
 import org.android.go.sopt.extension.showSnack
-import org.android.go.sopt.presentation.base.BaseViewModelActivity
+import org.android.go.sopt.presentation.base.BaseViewModelViewBindingActivity
 
 @AndroidEntryPoint
-class MainActivity : BaseViewModelActivity<ActivityMainBinding, MainViewModel>() {
+class MainViewBindingActivity : BaseViewModelViewBindingActivity<ActivityMainBinding, MainViewModel>() {
     override fun setBinding(layoutInflater: LayoutInflater): ActivityMainBinding {
         return ActivityMainBinding.inflate(layoutInflater)
     }

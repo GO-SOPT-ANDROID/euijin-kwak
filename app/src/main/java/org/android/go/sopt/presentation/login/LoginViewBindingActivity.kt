@@ -13,13 +13,13 @@ import org.android.go.sopt.extension.hideSoftKeyboard
 import org.android.go.sopt.extension.showErrorSnack
 import org.android.go.sopt.extension.showSnack
 import org.android.go.sopt.extension.showToast
-import org.android.go.sopt.presentation.base.BaseViewModelActivity
-import org.android.go.sopt.presentation.main.MainActivity
-import org.android.go.sopt.presentation.signup.SignUpActivity
+import org.android.go.sopt.presentation.base.BaseViewModelViewBindingActivity
+import org.android.go.sopt.presentation.main.MainViewBindingActivity
+import org.android.go.sopt.presentation.signup.SignUpViewBindingActivity
 import org.android.go.sopt.util.IntentKey
 
 @AndroidEntryPoint
-class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel>() {
+class LoginViewBindingActivity : BaseViewModelViewBindingActivity<ActivityLoginBinding, LoginViewModel>() {
 
     override val viewModel: LoginViewModel by viewModels()
 
@@ -38,7 +38,8 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
                 }
                 is LoginState.SuccessGetAutoLogin -> {
                     if (it.isAutoLogin) {
-                        Intent(this, MainActivity::class.java).let(::startActivity)
+                        Intent(this, MainViewBindingActivity::class.java).let(::startActivity)
+                        finish()
                     } else {
                         initViews()
                     }
@@ -71,7 +72,7 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
         }
 
         btSignUp.setOnClickListener {
-            Intent(this@LoginActivity, SignUpActivity::class.java).let(::startActivity)
+            Intent(this@LoginViewBindingActivity, SignUpViewBindingActivity::class.java).let(::startActivity)
         }
     }
 
@@ -87,7 +88,7 @@ class LoginActivity : BaseViewModelActivity<ActivityLoginBinding, LoginViewModel
 
     private fun successLogin(userData: UserData) {
         showToast(getString(R.string.login_complete))
-        Intent(this@LoginActivity, MainActivity::class.java).apply {
+        Intent(this@LoginViewBindingActivity, MainViewBindingActivity::class.java).apply {
             putExtra(IntentKey.USER_DATA, userData)
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
