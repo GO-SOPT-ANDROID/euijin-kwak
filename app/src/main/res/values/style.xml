@@ -1,18 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Text_SignUp_Style">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">30dp</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="EditText_Style">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:minHeight">48dp</item>
-        <item name="android:maxLines">1</item>
-    </style>
 
 </resources>
