@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menuHome"
+        android:icon="@drawable/ic_home_24_000000"
+        android:title="@string/menu_home"
+        android:orderInCategory="1"
+        android:checkable="true" />
+
+    <item android:id="@+id/menuSearch"
+        android:icon="@drawable/ic_search_24_000000"
+        android:title="@string/menu_search"
+        android:orderInCategory="1"
+        android:checkable="true" />
+
+    <item android:id="@+id/menuGallery"
+        android:icon="@drawable/ic_image_24_000000"
+        android:title="@string/menu_gallery"
+        android:orderInCategory="1"
+        android:checkable="true" />
+</menu>

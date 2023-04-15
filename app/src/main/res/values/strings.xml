@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">GO SOPT Android</string>
     <string name="newjeans_hypeboy">뉴진스의 하입보이</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_search">둘러보기</string>
+    <string name="menu_gallery">갤러리</string>
 </resources>

@@ -2,11 +2,12 @@ package org.android.go.sopt.presentation.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
+import org.android.go.sopt.R
 import org.android.go.sopt.databinding.ActivityMainBinding
 import org.android.go.sopt.presentation.base.BaseViewBindingActivity
-import org.android.go.sopt.util.MusicList
+import org.android.go.sopt.presentation.main.gallery.GalleryFragment
+import org.android.go.sopt.presentation.main.home.HomeFragment
+import org.android.go.sopt.presentation.main.search.SearchFragment
 
 class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
     override fun setBinding(layoutInflater: LayoutInflater): ActivityMainBinding {
@@ -15,24 +16,37 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initAdapter()
+        initFragment()
+        initBottomNavigation()
     }
 
-    private fun initAdapter() {
-        val mainTitleAdapter = MainTitleAdapter()
-        val musicListAdapter = MusicListAdapter()
-        initRecyclerView(mainTitleAdapter, musicListAdapter)
-    }
-
-    private fun initRecyclerView(mainTitleAdapter: MainTitleAdapter, musicListAdapter: MusicListAdapter) {
-        with(binding.rvMusicList) {
-            adapter = ConcatAdapter(mainTitleAdapter, musicListAdapter)
-            layoutManager = LinearLayoutManager(this@MainActivity)
+    private fun initBottomNavigation() {
+        binding.bottomNavigationView.apply {
+            setOnItemSelectedListener {
+                when (it.itemId) {
+                    R.id.menuHome -> {
+                        supportFragmentManager.beginTransaction().replace(binding.fragmentContainerView.id, HomeFragment()).commit()
+                        true
+                    }
+                    R.id.menuSearch -> {
+                        supportFragmentManager.beginTransaction().replace(binding.fragmentContainerView.id, SearchFragment()).commit()
+                        true
+                    }
+                    R.id.menuGallery -> {
+                        supportFragmentManager.beginTransaction().replace(binding.fragmentContainerView.id, GalleryFragment()).commit()
+                        true
+                    }
+                    else -> false
+                }
+            }
         }
-        setMusicData(musicListAdapter)
     }
 
-    private fun setMusicData(musicListAdapter: MusicListAdapter) {
-        musicListAdapter.submitList(MusicList.musicList)
+    private fun initFragment() {
+        supportFragmentManager.beginTransaction().replace(binding.fragmentContainerView.id, HomeFragment()).commit()
+    }
+
+    interface OnReselectListener {
+        fun onReselect()
     }
 }
