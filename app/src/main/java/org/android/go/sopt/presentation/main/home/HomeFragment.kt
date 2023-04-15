@@ -2,19 +2,18 @@ package org.android.go.sopt.presentation.main.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.navigation.NavigationBarView.OnItemReselectedListener
 import org.android.go.sopt.databinding.FragmentHomeBinding
+import org.android.go.sopt.presentation.main.MainActivity
 import org.android.go.sopt.presentation.main.MainTitleAdapter
 import org.android.go.sopt.presentation.main.MusicListAdapter
 import org.android.go.sopt.util.MusicList
 
-class HomeFragment:Fragment(), OnItemReselectedListener {
+class HomeFragment : Fragment(), MainActivity.OnReselectListener {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -33,7 +32,7 @@ class HomeFragment:Fragment(), OnItemReselectedListener {
         super.onDestroyView()
     }
 
-    override fun onNavigationItemReselected(item: MenuItem) {
+    override fun onReselect() {
         binding.rvMusicList.smoothScrollToPosition(0)
     }
 

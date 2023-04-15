@@ -39,6 +39,16 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
                     else -> false
                 }
             }
+            setOnItemReselectedListener {
+                when (it.itemId) {
+                    R.id.menuHome -> {
+                        val currentFragment = supportFragmentManager.fragments[0]
+                        if (currentFragment is HomeFragment) {
+                            currentFragment.onReselect()
+                        }
+                    }
+                }
+            }
         }
     }
 
