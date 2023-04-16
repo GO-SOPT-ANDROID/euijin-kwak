@@ -22,7 +22,7 @@ class HomeFragment : Fragment(), MainActivity.OnReselectListener {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private var tracker: SelectionTracker<String>? = null
+    private var tracker: SelectionTracker<Long>? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -55,42 +55,26 @@ class HomeFragment : Fragment(), MainActivity.OnReselectListener {
             adapter = ConcatAdapter(mainTitleAdapter, musicListAdapter)
             layoutManager = LinearLayoutManager(requireContext())
         }
+        setMusicData(musicListAdapter)
+
         tracker = SelectionTracker.Builder(
             "musicSelection",
             binding.rvMusicList,
-            MusicKeyProvider(MusicList.musicList.toMutableList()),
+            StableIdKeyProvider(binding.rvMusicList),
             MyItemDetailsLookup(binding.rvMusicList),
-            StorageStrategy.createStringStorage()
+            StorageStrategy.createLongStorage()
         ).withSelectionPredicate(
             SelectionPredicates.createSelectAnything()
         ).build()
-
         musicListAdapter.tracker = tracker
-        setMusicData(musicListAdapter)
     }
 
     private fun setMusicData(musicListAdapter: MusicListAdapter) {
         musicListAdapter.submitList(MusicList.musicList)
     }
 
-    class MusicKeyProvider(private val musicList: MutableList<MusicData>) :
-        ItemKeyProvider<String>(SCOPE_MAPPED) {
-
-        override fun getKey(position: Int): String {
-            return try {
-                musicList[position].musicName
-            } catch (e:Exception) {
-                Log.e("MusicKeyProvider", "getKey: $e")
-                ""
-            }
-        }
-
-        override fun getPosition(key: String): Int {
-            return musicList.indexOfFirst { it.musicName == key }
-        }
-    }
-    class MyItemDetailsLookup(private val recyclerView: RecyclerView) : ItemDetailsLookup<String>() {
-        override fun getItemDetails(event: MotionEvent): ItemDetails<String>? {
+    class MyItemDetailsLookup(private val recyclerView: RecyclerView) : ItemDetailsLookup<Long>() {
+        override fun getItemDetails(event: MotionEvent): ItemDetails<Long>? {
             val view = recyclerView.findChildViewUnder(event.x, event.y)
             if (view != null) {
                 return (recyclerView.getChildViewHolder(view) as? MusicListAdapter.MainViewHolder)?.getItemDetails()
