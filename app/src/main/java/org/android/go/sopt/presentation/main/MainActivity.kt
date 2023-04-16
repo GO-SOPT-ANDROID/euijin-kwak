@@ -2,6 +2,10 @@ package org.android.go.sopt.presentation.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
+import androidx.recyclerview.selection.ItemDetailsLookup
+import androidx.recyclerview.selection.ItemKeyProvider
+import androidx.recyclerview.widget.RecyclerView
 import org.android.go.sopt.R
 import org.android.go.sopt.databinding.ActivityMainBinding
 import org.android.go.sopt.presentation.base.BaseViewBindingActivity
