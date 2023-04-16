@@ -1,20 +1,16 @@
 package org.android.go.sopt.presentation.main.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.selection.*
-import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.android.go.sopt.databinding.FragmentHomeBinding
-import org.android.go.sopt.model.MusicData
 import org.android.go.sopt.presentation.main.MainActivity
-import org.android.go.sopt.presentation.main.MainTitleAdapter
 import org.android.go.sopt.presentation.main.MusicListAdapter
 import org.android.go.sopt.util.MusicList
 
@@ -45,14 +41,13 @@ class HomeFragment : Fragment(), MainActivity.OnReselectListener {
     }
 
     private fun initAdapter() {
-        val mainTitleAdapter = MainTitleAdapter()
         val musicListAdapter = MusicListAdapter()
-        initRecyclerView(mainTitleAdapter, musicListAdapter)
+        initRecyclerView(musicListAdapter)
     }
 
-    private fun initRecyclerView(mainTitleAdapter: MainTitleAdapter, musicListAdapter: MusicListAdapter) {
+    private fun initRecyclerView(musicListAdapter: MusicListAdapter) {
         with(binding.rvMusicList) {
-            adapter = ConcatAdapter(mainTitleAdapter, musicListAdapter)
+            adapter = musicListAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
         setMusicData(musicListAdapter)

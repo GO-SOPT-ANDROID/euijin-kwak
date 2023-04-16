@@ -2,10 +2,8 @@ package org.android.go.sopt.presentation.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
-import androidx.recyclerview.selection.ItemDetailsLookup
-import androidx.recyclerview.selection.ItemKeyProvider
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import org.android.go.sopt.R
 import org.android.go.sopt.databinding.ActivityMainBinding
 import org.android.go.sopt.presentation.base.BaseViewBindingActivity
@@ -27,21 +25,16 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
     private fun initBottomNavigation() {
         binding.bottomNavigationView.apply {
             setOnItemSelectedListener {
-                when (it.itemId) {
-                    R.id.menuHome -> {
-                        supportFragmentManager.beginTransaction().replace(binding.fragmentContainerView.id, HomeFragment()).commit()
-                        true
-                    }
-                    R.id.menuSearch -> {
-                        supportFragmentManager.beginTransaction().replace(binding.fragmentContainerView.id, SearchFragment()).commit()
-                        true
-                    }
-                    R.id.menuGallery -> {
-                        supportFragmentManager.beginTransaction().replace(binding.fragmentContainerView.id, GalleryFragment()).commit()
-                        true
-                    }
-                    else -> false
+                val fragment = when (it.itemId) {
+                    R.id.menuHome -> HomeFragment()
+                    R.id.menuSearch -> SearchFragment()
+                    R.id.menuGallery -> GalleryFragment()
+                    else -> null
                 }
+                fragment?.let { _fragment ->
+                    replaceFragment(_fragment)
+                    true
+                }?: false
             }
             setOnItemReselectedListener {
                 when (it.itemId) {
@@ -57,7 +50,15 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
     }
 
     private fun initFragment() {
-        supportFragmentManager.beginTransaction().replace(binding.fragmentContainerView.id, HomeFragment()).commit()
+        supportFragmentManager.commit {
+            replace(binding.fragmentContainerView.id, HomeFragment())
+        }
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.commit {
+            replace(binding.fragmentContainerView.id, fragment)
+        }
     }
 
     interface OnReselectListener {
