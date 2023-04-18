@@ -5,4 +5,8 @@
     <string name="menu_search">둘러보기</string>
     <string name="menu_gallery">갤러리</string>
     <string name="delete">삭제</string>
+    <string name="owner">Owner: %s</string>
+    <string name="language">Language: %s</string>
+    <string name="stars">Stars: %s</string>
+    <string name="forks">Forks: %s</string>
 </resources>
