@@ -39,9 +39,9 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
             setOnItemReselectedListener {
                 when (it.itemId) {
                     R.id.menuHome -> {
-                        val currentFragment = supportFragmentManager.fragments[0]
+                        val currentFragment = supportFragmentManager.fragments.first()
                         if (currentFragment is HomeFragment) {
-                            currentFragment.onReselect()
+                            currentFragment.setOnReselectListener().onReselect()
                         }
                     }
                 }
@@ -59,9 +59,5 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
         supportFragmentManager.commit {
             replace(binding.fragmentContainerView.id, fragment)
         }
-    }
-
-    interface OnReselectListener {
-        fun onReselect()
     }
 }

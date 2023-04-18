@@ -1,4 +1,4 @@
-package org.android.go.sopt.presentation.main
+package org.android.go.sopt.presentation.main.home.music
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -13,7 +13,7 @@ import org.android.go.sopt.model.MusicData
 
 class MusicListAdapter : ListAdapter<MusicData, MusicListAdapter.MainViewHolder>(diffUtil) {
 
-    var tracker: SelectionTracker<Long>? = null
+    private var tracker: SelectionTracker<Long>? = null
 
     init {
         setHasStableIds(true)
@@ -36,32 +36,33 @@ class MusicListAdapter : ListAdapter<MusicData, MusicListAdapter.MainViewHolder>
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
-        holder.bind(position)
+        holder.bind(currentList[position], tracker)
     }
 
     override fun getItemId(position: Int): Long {
-        return position.toLong()
+        return currentList[position].id.toLong()
     }
 
-    inner class MainViewHolder(private val binding: ItemMusicBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun setSelectionTracker(tracker: SelectionTracker<Long>) {
+        this.tracker = tracker
+    }
 
-        fun bind(position: Int) {
+    class MainViewHolder(private val binding: ItemMusicBinding) : RecyclerView.ViewHolder(binding.root) {
+        var element:MusicData? = null
+        fun bind(musicData: MusicData, tracker: SelectionTracker<Long>?) {
+            element = musicData
             with(binding) {
-                tvMusicName.text = currentList[position].musicName
-                tvSingerName.text = currentList[position].singerName
-                ivMusicImage.load(currentList[position].imageUrl)
-                itemView.isActivated = tracker?.isSelected(position.toLong()) ?: false
-            }
-
-            binding.root.setOnClickListener {
-                tracker?.select(position.toLong())
+                tvMusicName.text = musicData.musicName
+                tvSingerName.text = musicData.singerName
+                ivMusicImage.load(musicData.imageUrl)
+                itemView.isActivated = tracker?.isSelected(itemId) ?: false
             }
         }
 
         fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
             object : ItemDetailsLookup.ItemDetails<Long>() {
                 override fun getPosition(): Int = adapterPosition
-                override fun getSelectionKey(): Long = position.toLong()
+                override fun getSelectionKey(): Long = itemId
             }
     }
 }
