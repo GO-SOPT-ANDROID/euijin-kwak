@@ -5,13 +5,16 @@
     android:id="@+id/motionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     app:layoutDescription="@xml/motion_scene">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="150dp"
+    <TextView
+        android:id="@+id/textView"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
         android:layout_height="150dp"
-        android:src="@drawable/ic_launcher_background"
-        android:contentDescription="hello" />
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:text="@string/wise_saying"/>
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

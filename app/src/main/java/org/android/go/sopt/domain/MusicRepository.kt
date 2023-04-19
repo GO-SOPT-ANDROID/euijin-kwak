@@ -1,7 +1,6 @@
 package org.android.go.sopt.domain
 
 import kotlinx.coroutines.flow.Flow
-import org.android.go.sopt.data.model.music.MusicDataEntity
 import org.android.go.sopt.domain.entity.MusicData
 
 interface MusicRepository {

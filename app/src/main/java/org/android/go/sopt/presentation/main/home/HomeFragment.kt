@@ -1,7 +1,6 @@
 package org.android.go.sopt.presentation.main.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,7 +58,6 @@ class HomeFragment : Fragment() {
                             initRecyclerView(musicListAdapter)
                             viewModel.getMusicList()
                         }
-
 
                         is HomeState.SuccessMusicList -> {
                             musicListAdapter.submitList(it.musicList)

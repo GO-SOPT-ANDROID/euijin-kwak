@@ -10,4 +10,5 @@
     <string name="stars">Stars: %s</string>
     <string name="forks">Forks: %s</string>
     <string name="music_selection">musicSelection</string>
+    <string name="wise_saying">작은 기회로부터\n위대한 업적은 시작된다.</string>
 </resources>

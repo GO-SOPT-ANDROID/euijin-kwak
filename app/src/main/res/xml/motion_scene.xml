@@ -5,31 +5,47 @@
     <Transition
         motion:constraintSetStart="@+id/start"
         motion:constraintSetEnd="@+id/end"
-        motion:duration="1000">
-        <OnSwipe
-            motion:touchAnchorId="@+id/imageView"
-            motion:touchAnchorSide="right"
-            motion:dragDirection="dragRight" />
+        motion:duration="2000"
+        motion:autoTransition="animateToEnd">
+
+        <KeyFrameSet>
+            <KeyAttribute
+                motion:framePosition="0"
+                android:alpha="0"
+                motion:motionTarget="@id/textView"
+                motion:attributeName="textSize" />
+
+            <KeyAttribute
+                android:alpha="100"
+                motion:framePosition="100"
+                motion:motionTarget="@id/textView"
+                motion:attributeName="textSize" />
+        </KeyFrameSet>
+
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
         <Constraint
-            android:id="@+id/button"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginStart="8dp"
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            motion:layout_constraintVertical_bias="0.55"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
         <Constraint
-            android:id="@+id/imageView"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginEnd="8dp"
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            motion:layout_constraintVertical_bias="0.45"
             motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
             motion:layout_constraintTop_toTopOf="parent" />
     </ConstraintSet>
