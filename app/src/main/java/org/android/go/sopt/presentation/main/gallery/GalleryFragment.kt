@@ -10,12 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import coil.transform.CircleCropTransformation
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.android.go.sopt.databinding.FragmentGalleryBinding
-import org.android.go.sopt.model.FakeRepoResponse
+import org.android.go.sopt.data.model.git.FakeRepoResponse
 import org.android.go.sopt.presentation.main.gallery.github.GitRepoAdapter
 
+@AndroidEntryPoint
 class GalleryFragment : Fragment() {
     private var _binding: FragmentGalleryBinding? = null
     private val binding get() = _binding!!

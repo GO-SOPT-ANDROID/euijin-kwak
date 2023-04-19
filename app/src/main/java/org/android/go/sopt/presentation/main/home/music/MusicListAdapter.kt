@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import org.android.go.sopt.databinding.ItemMusicBinding
-import org.android.go.sopt.model.MusicData
+import org.android.go.sopt.data.model.music.MusicDataEntity
+import org.android.go.sopt.domain.entity.MusicData
 
 class MusicListAdapter : ListAdapter<MusicData, MusicListAdapter.MainViewHolder>(diffUtil) {
 
@@ -48,7 +49,7 @@ class MusicListAdapter : ListAdapter<MusicData, MusicListAdapter.MainViewHolder>
     }
 
     class MainViewHolder(private val binding: ItemMusicBinding) : RecyclerView.ViewHolder(binding.root) {
-        var element:MusicData? = null
+        var element: MusicData? = null
         fun bind(musicData: MusicData, tracker: SelectionTracker<Long>?) {
             element = musicData
             with(binding) {
@@ -61,7 +62,7 @@ class MusicListAdapter : ListAdapter<MusicData, MusicListAdapter.MainViewHolder>
 
         fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
             object : ItemDetailsLookup.ItemDetails<Long>() {
-                override fun getPosition(): Int = adapterPosition
+                override fun getPosition(): Int = absoluteAdapterPosition
                 override fun getSelectionKey(): Long = itemId
             }
     }

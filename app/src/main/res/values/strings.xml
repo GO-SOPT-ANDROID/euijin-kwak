@@ -9,4 +9,5 @@
     <string name="language">Language: %s</string>
     <string name="stars">Stars: %s</string>
     <string name="forks">Forks: %s</string>
+    <string name="music_selection">musicSelection</string>
 </resources>

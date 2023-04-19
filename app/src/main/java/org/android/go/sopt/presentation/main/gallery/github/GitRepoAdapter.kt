@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import org.android.go.sopt.R
 import org.android.go.sopt.databinding.ItemGitRepoBinding
-import org.android.go.sopt.model.FakeRepoResponse
+import org.android.go.sopt.data.model.git.FakeRepoResponse
+
 
 
 class GitRepoAdapter(private val onClick: (String) -> Unit) : ListAdapter<FakeRepoResponse.FakeRepoResponseItem, GitRepoAdapter.GitRepoViewHolder>(diffUtil) {

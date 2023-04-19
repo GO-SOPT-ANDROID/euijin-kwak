@@ -12,7 +12,7 @@ class SelectionKeyProvider(private val recyclerView: RecyclerView) : ItemKeyProv
         override fun getPosition(key: Long): Int {
             val holder = recyclerView.findViewHolderForItemId(key)
             return if (holder is MusicListAdapter.MainViewHolder) {
-                holder.adapterPosition
+                holder.absoluteAdapterPosition
             } else {
                 RecyclerView.NO_POSITION
             }
