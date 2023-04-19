@@ -7,7 +7,7 @@ import org.android.go.sopt.domain.entity.MusicData
 @Entity(tableName = "music")
 data class MusicDataEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val imageUrl:String,
     val musicName:String,
     val singerName:String
