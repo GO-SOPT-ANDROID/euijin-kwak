@@ -1,5 +1,7 @@
 package org.android.go.sopt.presentation.main.home
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,6 +11,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.android.go.sopt.domain.MusicRepository
 import org.android.go.sopt.domain.entity.MusicData
+import org.android.go.sopt.presentation.model.MusicItem
+import org.android.go.sopt.presentation.model.toMusicData
+import org.android.go.sopt.presentation.model.toMusicItem
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,8 +25,9 @@ class HomeViewModel @Inject constructor(private val musicRepository: MusicReposi
     fun getMusicList() {
         viewModelScope.launch(Dispatchers.IO) {
             musicRepository.getAll().collect {
+                val musicList = it.map {musicData-> musicData.toMusicItem() }
                 _homeState.value = HomeState.Loading
-                _homeState.value = HomeState.SuccessMusicList(it)
+                _homeState.value = HomeState.SuccessMusicList(musicList)
             }
         }
     }
@@ -29,25 +35,25 @@ class HomeViewModel @Inject constructor(private val musicRepository: MusicReposi
     fun getLatestMusic() {
         viewModelScope.launch(Dispatchers.IO) {
             _homeState.value = HomeState.Loading
-            _homeState.value = HomeState.SuccessLatestMusic(musicRepository.getLatestMusic())
+            _homeState.value = HomeState.SuccessLatestMusic(musicRepository.getLatestMusic().toMusicItem())
         }
     }
 
-    fun insertMusic(musicData: MusicData) {
+    fun insertMusic(musicData: MusicItem) {
         viewModelScope.launch(Dispatchers.IO) {
-            musicRepository.insert(musicData)
+            musicRepository.insert(musicData.toMusicData())
         }
     }
 
-    fun deleteMusic(musicData: MusicData) {
+    fun deleteMusic(musicData: MusicItem) {
         viewModelScope.launch(Dispatchers.IO) {
-            musicRepository.delete(musicData)
+            musicRepository.delete(musicData.toMusicData())
         }
     }
 
-    fun updateMusic(musicData: MusicData) {
+    fun updateMusic(musicData: MusicItem) {
         viewModelScope.launch(Dispatchers.IO) {
-            musicRepository.update(musicData)
+            musicRepository.update(musicData.toMusicData())
         }
     }
 }

@@ -6,7 +6,7 @@ import org.android.go.sopt.data.model.music.MusicDataEntity
 
 @Dao
 interface MusicDao {
-    @Query("SELECT * from music")
+    @Query("SELECT * from music ORDER BY id DESC")
     fun getAll(): Flow<List<MusicDataEntity>>
 
     @Query("SELECT * from music ORDER BY id DESC LIMIT 1")

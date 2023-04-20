@@ -1,6 +1,6 @@
 package org.android.go.sopt.presentation.main.home
 
-import org.android.go.sopt.domain.entity.MusicData
+import org.android.go.sopt.presentation.model.MusicItem
 
 sealed class HomeState {
     // create ui state
@@ -9,11 +9,11 @@ sealed class HomeState {
     object Loading : HomeState()
 
     data class SuccessMusicList(
-        val musicList: List<MusicData>
+        val musicList: List<MusicItem>
     ) : HomeState()
 
     data class SuccessLatestMusic(
-        val musicData: MusicData
+        val musicData: MusicItem
     ) : HomeState()
 
     data class Error(

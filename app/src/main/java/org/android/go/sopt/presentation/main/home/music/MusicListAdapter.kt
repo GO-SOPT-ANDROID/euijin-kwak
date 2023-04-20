@@ -9,10 +9,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import org.android.go.sopt.databinding.ItemMusicBinding
-import org.android.go.sopt.data.model.music.MusicDataEntity
-import org.android.go.sopt.domain.entity.MusicData
+import org.android.go.sopt.presentation.model.MusicItem
 
-class MusicListAdapter : ListAdapter<MusicData, MusicListAdapter.MainViewHolder>(diffUtil) {
+class MusicListAdapter(private val onclick:(MusicItem) -> Unit) : ListAdapter<MusicItem, MusicListAdapter.MainViewHolder>(diffUtil) {
 
     private var tracker: SelectionTracker<Long>? = null
 
@@ -21,19 +20,19 @@ class MusicListAdapter : ListAdapter<MusicData, MusicListAdapter.MainViewHolder>
     }
 
     companion object {
-        private val diffUtil = object : DiffUtil.ItemCallback<MusicData>() {
-            override fun areItemsTheSame(oldItem: MusicData, newItem: MusicData): Boolean {
+        private val diffUtil = object : DiffUtil.ItemCallback<MusicItem>() {
+            override fun areItemsTheSame(oldItem: MusicItem, newItem: MusicItem): Boolean {
                 return oldItem.musicName == newItem.musicName
             }
 
-            override fun areContentsTheSame(oldItem: MusicData, newItem: MusicData): Boolean {
+            override fun areContentsTheSame(oldItem: MusicItem, newItem: MusicItem): Boolean {
                 return oldItem == newItem
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-        return MainViewHolder(ItemMusicBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return MainViewHolder(ItemMusicBinding.inflate(LayoutInflater.from(parent.context), parent, false), onclick)
     }
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
@@ -48,15 +47,18 @@ class MusicListAdapter : ListAdapter<MusicData, MusicListAdapter.MainViewHolder>
         this.tracker = tracker
     }
 
-    class MainViewHolder(private val binding: ItemMusicBinding) : RecyclerView.ViewHolder(binding.root) {
-        var element: MusicData? = null
-        fun bind(musicData: MusicData, tracker: SelectionTracker<Long>?) {
+    class MainViewHolder(private val binding: ItemMusicBinding, private val onclick: (MusicItem) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+        var element: MusicItem? = null
+        fun bind(musicData: MusicItem, tracker: SelectionTracker<Long>?) {
             element = musicData
             with(binding) {
                 tvMusicName.text = musicData.musicName
                 tvSingerName.text = musicData.singerName
                 ivMusicImage.load(musicData.imageUrl)
                 itemView.isActivated = tracker?.isSelected(itemId) ?: false
+            }
+            itemView.setOnClickListener {
+                onclick(musicData)
             }
         }
 
