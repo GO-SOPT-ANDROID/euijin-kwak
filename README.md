@@ -7,6 +7,7 @@
 <br/>
 [Activity Task 정리](https://kwakeuijin-programing-study.tistory.com/36)
 <br/>
+### 2주차 
 [RecyclerView - Selection 라이브러리 에러 정리](https://www.notion.so/go-sopt/RecyclerView-Selection-b763288984d84553a7e17ac01a1ed11b?pvs=4)
 
 ## 템플릿 설명
