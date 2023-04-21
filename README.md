@@ -6,6 +6,8 @@
 [Activity 생명 주기 정리](https://kwakeuijin-programing-study.tistory.com/35)
 <br/>
 [Activity Task 정리](https://kwakeuijin-programing-study.tistory.com/36)
+<br/>
+[RecyclerView - Selection 라이브러리 에러 정리](https://www.notion.so/go-sopt/RecyclerView-Selection-b763288984d84553a7e17ac01a1ed11b?pvs=4)
 
 ## 템플릿 설명
 레포지터리에는 총 2개의 브랜치가 있습니다.
