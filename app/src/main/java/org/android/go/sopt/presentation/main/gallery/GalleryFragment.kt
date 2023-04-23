@@ -29,7 +29,7 @@ class GalleryFragment : Fragment() {
             }
         }
     }
-    private lateinit var gitProfileAdapter: GitProfileAdapter
+    private var gitProfileAdapter: GitProfileAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentGalleryBinding.inflate(inflater, container, false)
@@ -42,6 +42,7 @@ class GalleryFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        gitProfileAdapter = null
         _binding = null
         super.onDestroyView()
     }
@@ -61,10 +62,6 @@ class GalleryFragment : Fragment() {
 
     private fun parseData(): List<FakeRepoResponse.FakeRepoResponseItem> {
         val jsonString = requireContext().assets.open("fake_repo_list.json").reader().readText()
-        return parseJson(jsonString)
-    }
-
-    private fun parseJson(jsonString: String): List<FakeRepoResponse.FakeRepoResponseItem> {
         return Json.decodeFromString(jsonString)
     }
 }

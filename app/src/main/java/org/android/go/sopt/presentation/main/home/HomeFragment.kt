@@ -35,20 +35,9 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var tracker: SelectionTracker<Long>
+    private var tracker: SelectionTracker<Long>? = null
 
-    private val musicListAdapter by lazy {
-        MusicListAdapter { currentMusicData ->
-            AddDialog { updateMusicData ->
-                viewModel.updateMusic(updateMusicData)
-            }.let {
-                it.arguments = Bundle().apply {
-                    putParcelable(AddDialog.MUSIC_DATA, currentMusicData)
-                }
-                parentFragmentManager.beginTransaction().add(it, ADD_DIALOG).commitAllowingStateLoss()
-            }
-        }
-    }
+    private var musicListAdapter: MusicListAdapter? = null
 
     private val viewModel by viewModels<HomeViewModel>()
 
@@ -63,18 +52,21 @@ class HomeFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        musicListAdapter = null
+        tracker = null
         _binding = null
         super.onDestroyView()
     }
 
     private fun initObserve() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.homeState.collectLatest {
                     when (it) {
                         is HomeState.UnInitialized -> {
                             initAddButton()
-                            initRecyclerView(musicListAdapter)
+                            initAdapter()
+                            initRecyclerView()
                             viewModel.getMusicList()
                         }
 
@@ -91,9 +83,20 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun initAdapter() {
+        musicListAdapter = MusicListAdapter { currentMusicData ->
+            AddDialog().apply {
+                arguments?.putParcelable(AddDialog.MUSIC_DATA, currentMusicData)
+                setOnItemClickListener {
+                    viewModel.updateMusic(it)
+                }
+            }.let { parentFragmentManager.beginTransaction().add(it, ADD_DIALOG).commitAllowingStateLoss() }
+        }
+    }
+
     private fun successHandler(musicList: List<MusicItem>) {
-        musicListAdapter.submitList(musicList)
-        lifecycleScope.launch {
+        musicListAdapter?.submitList(musicList)
+        viewLifecycleOwner.lifecycleScope.launch {
             delay(100)
             binding.rvMusicList.smoothScrollToPosition(0)
         }
@@ -101,21 +104,20 @@ class HomeFragment : Fragment() {
 
     private fun initAddButton() {
         binding.btAdd.setOnClickListener {
-            AddDialog { musicData ->
-                viewModel.insertMusic(musicData)
-            }.let {
-                parentFragmentManager.beginTransaction()
-                    .add(it, ADD_DIALOG).commitAllowingStateLoss()
-            }
+            AddDialog().apply {
+                setOnItemClickListener { musicData -> viewModel.insertMusic(musicData) }
+            }.let { parentFragmentManager.beginTransaction().add(it, ADD_DIALOG).commitAllowingStateLoss() }
         }
     }
 
-    private fun initRecyclerView(musicListAdapter: MusicListAdapter) {
-        with(binding.rvMusicList) {
-            adapter = musicListAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-        }
-        setSelectionTracker(musicListAdapter)
+    private fun initRecyclerView() {
+        musicListAdapter?.let {
+            with(binding.rvMusicList) {
+                adapter = it
+                layoutManager = LinearLayoutManager(requireContext())
+            }
+            setSelectionTracker(it)
+        }  //TODO Null ERROR 처리 필요
     }
 
     private fun setSelectionTracker(musicListAdapter: MusicListAdapter) {
@@ -128,14 +130,13 @@ class HomeFragment : Fragment() {
             StorageStrategy.createLongStorage()
         ).withSelectionPredicate(
             SelectionPredicates.createSelectAnything()
-        ).build()
-        musicListAdapter.setSelectionTracker(tracker)
-        setTrackerObserve(tracker)
+        ).build().also {
+            musicListAdapter.setSelectionTracker(it)
+            setTrackerObserve(it)
+        }
     }
 
-    private fun setTrackerObserve(
-        tracker: SelectionTracker<Long>
-    ) {
+    private fun setTrackerObserve(tracker: SelectionTracker<Long>) {
         tracker.addObserver(object : SelectionTracker.SelectionObserver<Long>() {
             override fun onSelectionChanged() {
                 super.onSelectionChanged()

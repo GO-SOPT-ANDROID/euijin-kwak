@@ -11,13 +11,14 @@ import org.android.go.sopt.extension.getExtParcelable
 import org.android.go.sopt.presentation.model.MusicItem
 import org.android.go.sopt.util.DialogUtil
 
-class AddDialog(private val onSuccessDataInsert: (MusicItem) -> Unit) : DialogFragment() {
+class AddDialog() : DialogFragment() {
 
     companion object {
         const val MUSIC_DATA = "MUSIC_DATA"
     }
 
     private var currentId: Int? = null
+    private var onSuccessDataInsert: ((MusicItem) -> Unit)? = null
 
     private var _binding: DialogAddBinding? = null
     private val binding get() = _binding!!
@@ -62,7 +63,7 @@ class AddDialog(private val onSuccessDataInsert: (MusicItem) -> Unit) : DialogFr
     private fun initViews() {
         binding.btComplete.setOnClickListener {
             if (isMusicDataEmpty()) {
-                onSuccessDataInsert(
+                onSuccessDataInsert?.invoke(
                     MusicItem(
                         id = currentId ?: 0,
                         musicName = binding.etMusicName.text.toString(),
@@ -79,6 +80,10 @@ class AddDialog(private val onSuccessDataInsert: (MusicItem) -> Unit) : DialogFr
         binding.etMusicName.text.toString().isNotEmpty() &&
                 binding.etSingerName.text.toString().isNotEmpty() &&
                 binding.etImageUrl.text.toString().isNotEmpty()
+
+    fun setOnItemClickListener(onSuccessDataInsert: (MusicItem) -> Unit) {
+        this.onSuccessDataInsert = onSuccessDataInsert
+    }
 
 
 }

@@ -3,6 +3,7 @@ package org.android.go.sopt
 import org.junit.Test
 
 import org.junit.Assert.*
+import kotlin.random.Random
 
 /**
  * Example local unit test, which will execute on the development machine (host).
