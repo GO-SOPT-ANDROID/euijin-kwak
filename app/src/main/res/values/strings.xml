@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">GO SOPT Android</string>
     <string name="newjeans_hypeboy">뉴진스의 하입보이</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_search">둘러보기</string>
+    <string name="menu_gallery">갤러리</string>
+    <string name="delete">삭제</string>
+    <string name="owner">Owner: %s</string>
+    <string name="language">Language: %s</string>
+    <string name="stars">Stars: %s</string>
+    <string name="forks">Forks: %s</string>
+    <string name="music_selection">musicSelection</string>
+    <string name="wise_saying">작은 기회로부터\n위대한 업적은 시작된다.</string>
+    <string name="add">추가</string>
+    <string name="music_name">음악 제목</string>
+    <string name="singer_name">가수 이름</string>
+    <string name="Image_url">이미지 URL</string>
+    <string name="complete">완료</string>
 </resources>

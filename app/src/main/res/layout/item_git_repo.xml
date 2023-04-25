@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_solid_layout_ffffff"
+    android:padding="16dp"
+    android:layout_marginTop="5dp">
+
+    <TextView
+        android:id="@+id/tvRepoName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="AlarmSystem" />
+
+    <TextView
+        android:id="@+id/tvRepoDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tvRepoName"
+        app:layout_constraintTop_toBottomOf="@id/tvRepoName"
+        tools:text="This is a sample description" />
+
+    <TextView
+        android:id="@+id/tvOwner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tvRepoDescription"
+        app:layout_constraintTop_toBottomOf="@id/tvRepoDescription"
+        android:text="@string/owner" />
+
+    <TextView
+        android:id="@+id/tvRepoLanguage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="2dp"
+        android:textColor="#7405CD"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:drawableStartCompat="@drawable/ic_language_24_878787"
+        app:layout_constraintStart_toStartOf="@id/tvOwner"
+        app:layout_constraintTop_toBottomOf="@id/tvOwner"
+        android:text="@string/language" />
+
+    <TextView
+        android:id="@+id/tvRepoStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="2dp"
+        android:textSize="14sp"
+        app:drawableStartCompat="@drawable/ic_star_24_ffde30"
+        app:layout_constraintStart_toStartOf="@id/tvRepoLanguage"
+        app:layout_constraintTop_toBottomOf="@id/tvRepoLanguage"
+        android:text="@string/stars" />
+
+    <TextView
+        android:id="@+id/tvRepoFork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="2dp"
+        android:textSize="14sp"
+        app:drawableStartCompat="@drawable/ic_transform_24_000000"
+        app:layout_constraintStart_toStartOf="@id/tvRepoStar"
+        app:layout_constraintTop_toBottomOf="@id/tvRepoStar"
+        android:text="@string/forks" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

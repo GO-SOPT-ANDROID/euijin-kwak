@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="10dp"
-    android:layout_height="wrap_content">
+    android:background="@drawable/selector_item_music">
 
     <ImageView
         android:id="@+id/ivMusicImage"
@@ -17,24 +18,32 @@
 
     <TextView
         android:id="@+id/tvMusicName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
+        android:ellipsize="end"
+        android:gravity="end"
+        android:maxLines="1"
         android:textColor="@color/c_111111"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivMusicImage"
         app:layout_constraintTop_toTopOf="@id/ivMusicImage"
         tools:text="Hype Boy" />
 
 
     <TextView
         android:id="@+id/tvSingerName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="end"
+        android:maxLines="1"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@id/tvMusicName"
+        app:layout_constraintStart_toEndOf="@id/ivMusicImage"
         app:layout_constraintTop_toBottomOf="@id/tvMusicName"
         tools:text="뉴진스" />
 
