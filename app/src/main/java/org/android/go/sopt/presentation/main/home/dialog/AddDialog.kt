@@ -11,7 +11,7 @@ import org.android.go.sopt.extension.getExtParcelable
 import org.android.go.sopt.presentation.model.MusicItem
 import org.android.go.sopt.util.DialogUtil
 
-class AddDialog() : DialogFragment() {
+class AddDialog: DialogFragment() {
 
     companion object {
         const val MUSIC_DATA = "MUSIC_DATA"
@@ -84,6 +84,4 @@ class AddDialog() : DialogFragment() {
     fun setOnItemClickListener(onSuccessDataInsert: (MusicItem) -> Unit) {
         this.onSuccessDataInsert = onSuccessDataInsert
     }
-
-
 }

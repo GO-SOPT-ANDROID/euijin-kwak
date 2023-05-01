@@ -7,15 +7,15 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvRepoList"
-        android:paddingHorizontal="10dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
-        tools:listitem="@layout/item_git_repo"
+        android:paddingHorizontal="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_git_repo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
