@@ -51,7 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/complete"
-        android:textColor="?attr/colorOnBackground"
+        android:textColor="?colorOnBackground"
         android:fontFamily="@font/pretendard_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/etMusicName"
