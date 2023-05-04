@@ -5,17 +5,24 @@
         <item name="colorPrimary">@color/green_100</item>
         <item name="colorPrimaryVariant">@color/green_300</item>
         <item name="colorOnPrimary">@color/white</item>
+
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/pink_200</item>
         <item name="colorSecondaryVariant">@color/pink_300</item>
         <item name="colorOnSecondary">@color/black</item>
+
+        <!-- Neutral Key Color -->
         <item name="colorOnBackground">@color/black</item>
         <item name="colorSurface">@color/gray</item>
         <item name="colorOnSurface">@color/black</item>
         <item name="android:colorBackground">@color/white</item>
+
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?android:colorBackground</item>
         <item name="android:windowLightStatusBar">true</item>
+
         <!-- Customize your theme here. -->
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.MyApp.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.MyApp.HeadlineMedium</item>
     </style>
 </resources>
