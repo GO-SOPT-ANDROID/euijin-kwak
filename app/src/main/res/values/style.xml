@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="TextAppearance.MyApp.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="fontFamily">@font/pretendard_bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">36sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
 
+    <style name="TextAppearance.MyApp.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/pretendard_bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
 </resources>
