@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.map
 import org.android.go.sopt.data.dao.MusicDao
 import org.android.go.sopt.data.model.music.toMusicData
 import org.android.go.sopt.data.model.music.toMusicDataEntity
-import org.android.go.sopt.domain.MusicRepository
+import org.android.go.sopt.domain.repository.MusicRepository
 import org.android.go.sopt.domain.entity.MusicData
 import javax.inject.Inject
 

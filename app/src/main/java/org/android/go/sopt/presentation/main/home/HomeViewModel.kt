@@ -1,7 +1,5 @@
 package org.android.go.sopt.presentation.main.home
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,8 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.android.go.sopt.domain.MusicRepository
-import org.android.go.sopt.domain.entity.MusicData
+import org.android.go.sopt.domain.repository.MusicRepository
 import org.android.go.sopt.presentation.model.MusicItem
 import org.android.go.sopt.presentation.model.toMusicData
 import org.android.go.sopt.presentation.model.toMusicItem
