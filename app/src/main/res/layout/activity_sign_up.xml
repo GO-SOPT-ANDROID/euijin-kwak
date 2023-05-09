@@ -25,6 +25,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvTitle"
+            app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+            android:padding="12dp"/>
+
         <TextView
             android:id="@+id/tvId"
             style="@style/Text_SignUp_Style"
@@ -38,9 +48,22 @@
             android:hint="@string/please_input_id"
             android:importantForAutofill="no"
             android:inputType="text"
-            app:layout_constraintEnd_toEndOf="@id/tvTitle"
+            app:layout_constraintEnd_toStartOf="@id/btDuplicateCheck"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
             app:layout_constraintTop_toBottomOf="@id/tvId" />
+
+        <Button
+            android:id="@+id/btDuplicateCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:backgroundTint="?colorSecondary"
+            android:paddingHorizontal="10dp"
+            android:text="@string/id_duplicate_check"
+            app:layout_constraintBottom_toBottomOf="@id/etId"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/etId"
+            app:layout_constraintTop_toTopOf="@id/etId" />
 
         <TextView
             android:id="@+id/tvPassWord"

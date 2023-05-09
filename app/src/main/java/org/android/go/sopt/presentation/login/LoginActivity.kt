@@ -3,7 +3,6 @@ package org.android.go.sopt.presentation.login
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.android.go.sopt.R
@@ -13,7 +12,6 @@ import org.android.go.sopt.databinding.ActivityLoginBinding
 import org.android.go.sopt.extension.showToast
 import org.android.go.sopt.presentation.main.MainActivity
 import org.android.go.sopt.presentation.sign.SignUpActivity
-import org.android.go.sopt.showSnack
 
 class LoginActivity : AppCompatActivity() {
 
@@ -51,16 +49,12 @@ class LoginActivity : AppCompatActivity() {
     private fun startLogin(id: String, password: String) {
         lifecycleScope.launch {
             val response = ServicePool.signUpService.postLogin(SoptLoginRequest(id, password))
-            if (response.isSuccessful) {
+            if (response.isSuccessful && response.body()?.status == 200) {
                 showToast(getString(R.string.login_complete))
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             } else {
-                showSnackFailedLogin()
+                showToast(response.body()?.message ?:getString(R.string.login_not_complete_message))
             }
         }
-    }
-
-    private fun showSnackFailedLogin() {
-        binding.root.showSnack(getString(R.string.login_not_complete_message))
     }
 }

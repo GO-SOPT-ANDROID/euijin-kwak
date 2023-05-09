@@ -17,6 +17,8 @@ class SignUpActivity : AppCompatActivity() {
         ActivitySignUpBinding.inflate(layoutInflater)
     }
 
+    private var isDuplicatedId = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -27,6 +29,13 @@ class SignUpActivity : AppCompatActivity() {
     private fun initViews() {
         initSignUpButton()
         initDuplicateIdButton()
+        initBackButton()
+    }
+
+    private fun initBackButton() {
+        binding.ivBack.setOnClickListener {
+            finish()
+        }
     }
 
     private fun initSignUpButton() {
@@ -46,19 +55,34 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun initDuplicateIdButton() {
-//        TODO("Not yet implemented")
+        binding.btDuplicateCheck.setOnClickListener {
+            val id = binding.etId.text.toString()
+            startDuplicateIdCheck(id)
+        }
     }
 
     private fun startSignUp(id: String, password: String, name: String, skill: String) {
         lifecycleScope.launch {
             val response = ServicePool.signUpService.postSignUp(SoptSignUpRequest(id, password, name, skill))
-            if (response.isSuccessful) {
+            if (response.isSuccessful && response.body()?.status == 200) {
                 finish()
             } else {
                 binding.root.showSnack(getString(R.string.sign_up_failed_message))
             }
         }
+    }
 
+    private fun startDuplicateIdCheck(id: String) {
+        lifecycleScope.launch {
+            val response = ServicePool.signUpService.getUserInfo(id)
+            if (response.isSuccessful && response.body()?.status == 200) {
+                binding.root.showSnack(getString(R.string.sign_up_duplicate_id_message))
+            } else {
+                isDuplicatedId = false
+                binding.btDuplicateCheck.isEnabled = false
+                binding.root.showSnack(getString(R.string.sign_up_available_id_message))
+            }
+        }
     }
 
     private fun initEditTextError() {
@@ -94,13 +118,21 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun isValid(): Boolean {
         with(binding) {
-            return etId.error.isNullOrEmpty() && etPassword.error.isNullOrEmpty() && etId.text.isNotEmpty() && etPassword.text.isNotEmpty()
+            return etId.error.isNullOrEmpty()
+                    && etPassword.error.isNullOrEmpty()
+                    && etId.text.isNotEmpty()
+                    && etPassword.text.isNotEmpty()
+                    && !isDuplicatedId
         }
     }
 
     private fun showSnackErrorSignUp() {
         with(binding) {
             when {
+                isDuplicatedId -> {
+                    root.showSnack(getString(R.string.action_id_duplicate_check))
+                }
+
                 etName.text.isNullOrEmpty() -> {
                     root.showSnack(getString(R.string.sign_up_error_name_message))
                 }

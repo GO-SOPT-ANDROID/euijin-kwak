@@ -6,17 +6,17 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SoptSignUpResponse(
     @SerialName("status")
-    val status: Int,
+    val status: Int? = null,
     @SerialName("message")
-    val message: String,
+    val message: String? = null,
     @SerialName("data")
-    val data: SignUpData,
+    val data: SignUpData? = null,
 ) {
     @Serializable
     data class SignUpData(
         @SerialName("name")
-        val name: String,
+        val name: String? = null,
         @SerialName("skill")
-        val skill: String,
+        val skill: String? = null,
     )
 }

@@ -44,10 +44,16 @@
     <string name="sign_up_password_error_message">비밀번호는 8자 이상 이어야 합니다</string>
     <string name="sign_up_not_complete_message">회원가입을 먼저 진행해주세요</string>
     <string name="sign_up_failed_message">회원가입에 실패하였습니다</string>
+    <string name="sign_up_duplicate_id_message">이미 존재하는 ID입니다.</string>
+    <string name="sign_up_available_id_message">사용 가능한 ID입니다.</string>
     <string name="login_not_complete_message">로그인에 실패하였습니다.</string>
     <string name="error_message">에러가 발생하였습니다.</string>
+
     <string name="user_name_null">이름이 없습니다.</string>
     <string name="user_specialty_null">특기가 없습니다</string>
     <string name="user_name_format">이름: %s</string>
     <string name="user_specialty_format">특기: %s</string>
+
+    <string name="id_duplicate_check">아이디 중복 체크</string>
+    <string name="action_id_duplicate_check">아이디 중복 체크를 해주세요</string>
 </resources>
