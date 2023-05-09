@@ -37,10 +37,13 @@
 
 
     <!--    Error   -->
-    <string name="sign_up_error_message">정보를 다시 입력해주세요</string>
-    <string name="sign_up_id_error_message">아이디는 6자 이상이어야 합니다.</string>
-    <string name="sign_up_password_error_message">비밀번호는 8자 이상이어야 합니다.</string>
-    <string name="sign_up_not_complete_message">회원가입을 먼저 진행해주세요.</string>
+    <string name="sign_up_error_info_message">정보를 다시 입력해주세요</string>
+    <string name="sign_up_error_name_message">이름을 입력해주세요</string>
+    <string name="sign_up_error_skill_message">Skill을 입력해주세요</string>
+    <string name="sign_up_id_error_message">아이디는 6자 이상이어야 합니다</string>
+    <string name="sign_up_password_error_message">비밀번호는 8자 이상 이어야 합니다</string>
+    <string name="sign_up_not_complete_message">회원가입을 먼저 진행해주세요</string>
+    <string name="sign_up_failed_message">회원가입에 실패하였습니다</string>
     <string name="login_not_complete_message">로그인에 실패하였습니다.</string>
     <string name="error_message">에러가 발생하였습니다.</string>
     <string name="user_name_null">이름이 없습니다.</string>

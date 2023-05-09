@@ -85,7 +85,7 @@
             app:layout_constraintTop_toBottomOf="@id/etName" />
 
         <EditText
-            android:id="@+id/etSpecialty"
+            android:id="@+id/etSkill"
             style="@style/EditText_Style"
             android:hint="@string/please_input_specialty"
             android:importantForAutofill="no"
@@ -105,7 +105,7 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="@+id/tvTitle"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/etSpecialty" />
+            app:layout_constraintTop_toBottomOf="@id/etSkill" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
