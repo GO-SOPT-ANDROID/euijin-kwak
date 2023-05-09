@@ -12,17 +12,17 @@ import retrofit2.http.Path
 interface SoptService {
 
     @GET("/info/{userId}")
-    fun getUserInfo(
+    suspend fun getUserInfo(
         @Path("userId") userId: String
     ): Response<SoptLoginResponse>
 
     @POST("/sign-up")
-    fun postSignUp(
+    suspend fun postSignUp(
         @Body body: SoptSignUpRequest
     ): Response<SoptLoginResponse>
 
     @POST("/sign-in")
-    fun postLogin(
+    suspend fun postLogin(
         @Body body: SoptLoginRequest
     ): Response<SoptLoginResponse>
 
