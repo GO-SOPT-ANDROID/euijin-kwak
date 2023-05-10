@@ -34,9 +34,6 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
-    viewBinding {
-        enabled = true
-    }
     buildFeatures {
         viewBinding true
     }
