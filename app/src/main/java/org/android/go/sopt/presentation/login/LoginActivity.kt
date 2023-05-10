@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.android.go.sopt.R
-import org.android.go.sopt.data.api.ServicePool
+import org.android.go.sopt.data.api.ApiFactory
 import org.android.go.sopt.data.model.sopt.SoptLoginRequest
 import org.android.go.sopt.databinding.ActivityLoginBinding
 import org.android.go.sopt.extension.showToast
@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun startLogin(id: String, password: String) {
         lifecycleScope.launch {
-            val response = ServicePool.signUpService.postLogin(SoptLoginRequest(id, password))
+            val response = ApiFactory.signUpService.postLogin(SoptLoginRequest(id, password))
             if (response.isSuccessful && response.body()?.status == 200) {
                 showToast(getString(R.string.login_complete))
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))

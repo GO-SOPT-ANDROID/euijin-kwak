@@ -10,6 +10,7 @@ import org.android.go.sopt.databinding.ActivityMainBinding
 import org.android.go.sopt.presentation.base.BaseViewBindingActivity
 import org.android.go.sopt.presentation.main.gallery.GalleryFragment
 import org.android.go.sopt.presentation.main.home.HomeFragment
+import org.android.go.sopt.presentation.main.player.MusicFragment
 import org.android.go.sopt.presentation.main.search.SearchFragment
 
 @AndroidEntryPoint
@@ -29,8 +30,9 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
             setOnItemSelectedListener {
                 val fragment = when (it.itemId) {
                     R.id.menuHome -> HomeFragment()
-                    R.id.menuSearch -> SearchFragment()
-                    R.id.menuGallery -> GalleryFragment()
+                    R.id.menuSearch -> MusicFragment()
+                    R.id.menuGallery -> SearchFragment()
+                    R.id.menuPlayer ->  GalleryFragment()
                     else -> null
                 }
                 fragment?.let { _fragment ->
@@ -42,7 +44,7 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
                 when (it.itemId) {
                     R.id.menuHome -> {
                         val currentFragment = supportFragmentManager.fragments.first()
-                        if (currentFragment is HomeFragment) {
+                        if (currentFragment is MusicFragment) {
                             currentFragment.setOnReselectListener().onReselect()
                         }
                     }
@@ -52,9 +54,7 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
     }
 
     private fun initFragment() {
-        supportFragmentManager.commit {
-            replace(binding.fragmentContainerView.id, HomeFragment())
-        }
+        replaceFragment(HomeFragment())
     }
 
     private fun replaceFragment(fragment: Fragment) {

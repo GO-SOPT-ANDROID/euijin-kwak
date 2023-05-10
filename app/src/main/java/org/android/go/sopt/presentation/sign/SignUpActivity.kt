@@ -1,12 +1,12 @@
 package org.android.go.sopt.presentation.sign
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.android.go.sopt.R
-import org.android.go.sopt.data.api.ServicePool
+import org.android.go.sopt.data.api.ApiFactory
 import org.android.go.sopt.data.model.sopt.SoptSignUpRequest
 import org.android.go.sopt.databinding.ActivitySignUpBinding
 import org.android.go.sopt.showSnack
@@ -63,7 +63,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun startSignUp(id: String, password: String, name: String, skill: String) {
         lifecycleScope.launch {
-            val response = ServicePool.signUpService.postSignUp(SoptSignUpRequest(id, password, name, skill))
+            val response = ApiFactory.signUpService.postSignUp(SoptSignUpRequest(id, password, name, skill))
             if (response.isSuccessful && response.body()?.status == 200) {
                 finish()
             } else {
@@ -74,7 +74,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun startDuplicateIdCheck(id: String) {
         lifecycleScope.launch {
-            val response = ServicePool.signUpService.getUserInfo(id)
+            val response = ApiFactory.signUpService.getUserInfo(id)
             if (response.isSuccessful && response.body()?.status == 200) {
                 binding.root.showSnack(getString(R.string.sign_up_duplicate_id_message))
             } else {

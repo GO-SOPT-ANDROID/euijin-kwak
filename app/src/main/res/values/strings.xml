@@ -4,6 +4,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_search">둘러보기</string>
     <string name="menu_gallery">갤러리</string>
+    <string name="menu_player">음악</string>
     <string name="delete">삭제</string>
     <string name="owner">Owner: %s</string>
     <string name="language">Language: %s</string>
@@ -56,4 +57,6 @@
 
     <string name="id_duplicate_check">아이디 중복 체크</string>
     <string name="action_id_duplicate_check">아이디 중복 체크를 해주세요</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

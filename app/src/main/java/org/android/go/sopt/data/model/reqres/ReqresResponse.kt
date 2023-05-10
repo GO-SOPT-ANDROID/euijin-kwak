@@ -1,11 +1,11 @@
-package org.android.go.sopt.data.model.user
+package org.android.go.sopt.data.model.reqres
 
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserResponse(
+data class ReqresResponse(
     @SerialName("data")
     val data: List<Data?>?,
     @SerialName("page")

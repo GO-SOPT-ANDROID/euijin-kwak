@@ -1,22 +1,22 @@
-package org.android.go.sopt.presentation.main.home
+package org.android.go.sopt.presentation.main.player
 
 import org.android.go.sopt.presentation.model.MusicItem
 
-sealed class HomeState {
+sealed class MusicState {
     // create ui state
-    object UnInitialized : HomeState()
+    object UnInitialized : MusicState()
 
-    object Loading : HomeState()
+    object Loading : MusicState()
 
     data class SuccessMusicList(
         val musicList: List<MusicItem>
-    ) : HomeState()
+    ) : MusicState()
 
     data class SuccessLatestMusic(
         val musicData: MusicItem
-    ) : HomeState()
+    ) : MusicState()
 
     data class Error(
         val message: String
-    ) : HomeState()
+    ) : MusicState()
 }
