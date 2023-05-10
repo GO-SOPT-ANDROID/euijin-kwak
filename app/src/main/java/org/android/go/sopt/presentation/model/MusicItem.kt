@@ -2,7 +2,7 @@ package org.android.go.sopt.presentation.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import org.android.go.sopt.domain.entity.MusicData
+import org.android.go.sopt.domain.entity.music.MusicData
 
 @Parcelize
 data class MusicItem(

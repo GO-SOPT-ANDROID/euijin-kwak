@@ -1,4 +1,4 @@
-package org.android.go.sopt.domain.entity
+package org.android.go.sopt.domain.entity.music
 
 data class MusicData(
     val id: Int = 0,

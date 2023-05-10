@@ -2,7 +2,7 @@ package org.android.go.sopt.data.model.music
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.android.go.sopt.domain.entity.MusicData
+import org.android.go.sopt.domain.entity.music.MusicData
 
 @Entity(tableName = "music")
 data class MusicDataEntity(

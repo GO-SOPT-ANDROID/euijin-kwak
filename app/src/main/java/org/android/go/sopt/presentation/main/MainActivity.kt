@@ -30,9 +30,9 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
             setOnItemSelectedListener {
                 val fragment = when (it.itemId) {
                     R.id.menuHome -> HomeFragment()
-                    R.id.menuSearch -> MusicFragment()
-                    R.id.menuGallery -> SearchFragment()
-                    R.id.menuPlayer ->  GalleryFragment()
+                    R.id.menuSearch -> SearchFragment()
+                    R.id.menuGallery -> GalleryFragment()
+                    R.id.menuPlayer ->  MusicFragment()
                     else -> null
                 }
                 fragment?.let { _fragment ->
