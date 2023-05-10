@@ -47,6 +47,7 @@ class HomeFragment : Fragment() {
         reqresAdapter = null
         super.onDestroyView()
     }
+
     private fun initRecyclerView() {
         reqresAdapter = ReqresAdapter()
 

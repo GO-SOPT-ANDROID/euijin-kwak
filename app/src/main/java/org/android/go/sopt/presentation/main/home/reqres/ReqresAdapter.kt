@@ -11,6 +11,7 @@ import org.android.go.sopt.databinding.ItemReqesBinding
 
 class ReqresAdapter : ListAdapter<ReqresResponse.Data, ReqresAdapter.ReqresViewHolder>(diffUtil) {
 
+    // Companion Object는 클래스 내부에서 하단에 선언하는 것이 코틀린 스타일에서 권장하는 방법입니다.
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<ReqresResponse.Data>() {
             override fun areItemsTheSame(oldItem: ReqresResponse.Data, newItem: ReqresResponse.Data): Boolean {
