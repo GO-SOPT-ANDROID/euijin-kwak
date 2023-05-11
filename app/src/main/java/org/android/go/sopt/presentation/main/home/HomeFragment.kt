@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.android.go.sopt.data.api.ApiFactory
 import org.android.go.sopt.databinding.FragmentHomeBinding
 import org.android.go.sopt.presentation.UIState
 import org.android.go.sopt.presentation.main.home.reqres.ReqresAdapter
