@@ -34,8 +34,8 @@ class KakaoSearchResultAdapter: ListAdapter<KakaoSearchWebEntity.Document, Kakao
     class KakaoSearchResultViewHolder(private val binding:ItemKakaoResultBinding):ViewHolder(binding.root) {
         fun bind(item:KakaoSearchWebEntity.Document) {
             with(binding) {
-                tvTitle.text = Html.fromHtml(item.title, Html.FROM_HTML_MODE_LEGACY).toString()
-                tvContents.text = Html.fromHtml(item.contents, Html.FROM_HTML_MODE_LEGACY).toString()
+                tvTitle.text = Html.fromHtml(item.title, Html.FROM_HTML_MODE_LEGACY)
+                tvContents.text = Html.fromHtml(item.contents, Html.FROM_HTML_MODE_LEGACY)
             }
         }
     }

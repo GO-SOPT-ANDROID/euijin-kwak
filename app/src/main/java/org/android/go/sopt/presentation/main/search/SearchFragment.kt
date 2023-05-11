@@ -133,6 +133,6 @@ class SearchFragment : Fragment() {
 
     private fun replaceSuggestionList(searchResultTitle: List<String>) =
         searchResultTitle.map { title ->
-            Html.fromHtml(title, Html.FROM_HTML_MODE_LEGACY).toString()
+            Html.fromHtml(title, Html.FROM_HTML_MODE_LEGACY)
         }
 }
