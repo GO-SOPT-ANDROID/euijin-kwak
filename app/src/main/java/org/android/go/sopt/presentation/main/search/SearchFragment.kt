@@ -5,7 +5,6 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.android.go.sopt.databinding.FragmentSearchBinding
+import org.android.go.sopt.extension.fromHtmlLegacy
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -38,9 +38,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
-            initObserve()
-        }
+        initObserve()
     }
 
     private fun initRecyclerView() {
@@ -91,29 +89,31 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private suspend fun initObserve() {
-        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-            viewModel.searchViewState.collectLatest { searchViewState ->
-                when (searchViewState) {
-                    SearchViewState.UnInitialized -> {
-                        initSearchView()
-                        initRecyclerView()
-                    }
+    private fun initObserve() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.searchViewState.collectLatest { searchViewState ->
+                    when (searchViewState) {
+                        SearchViewState.UnInitialized -> {
+                            initSearchView()
+                            initRecyclerView()
+                        }
 
-                    is SearchViewState.Loading -> {
-                        // 로딩
-                    }
+                        is SearchViewState.Loading -> {
+                            //TODO Loading
+                        }
 
-                    is SearchViewState.SuccessSearchKeyword -> {
-                        changeSearchTitleListener(searchViewState.data)
-                    }
+                        is SearchViewState.SuccessSearchKeyword -> {
+                            changeSearchTitleListener(searchViewState.data)
+                        }
 
-                    is SearchViewState.SuccessSearchWeb -> {
-                        kakaoSearchResultAdapter.submitList(searchViewState.data.documents)
-                    }
+                        is SearchViewState.SuccessSearchWeb -> {
+                            kakaoSearchResultAdapter.submitList(searchViewState.data.documents)
+                        }
 
-                    else -> {
-
+                        else -> {
+                            //TODO ERROR Handling
+                        }
                     }
                 }
             }
@@ -133,6 +133,6 @@ class SearchFragment : Fragment() {
 
     private fun replaceSuggestionList(searchResultTitle: List<String>) =
         searchResultTitle.map { title ->
-            Html.fromHtml(title, Html.FROM_HTML_MODE_LEGACY)
+            title.fromHtmlLegacy()
         }
 }

@@ -3,6 +3,7 @@ package org.android.go.sopt.data.model.reqres
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.android.go.sopt.domain.entity.reqres.ReqresEntity
 
 @Serializable
 data class ReqresResponse(
@@ -19,13 +20,6 @@ data class ReqresResponse(
     @SerialName("total_pages")
     val totalPages: Int?
 ) {
-    @Serializable
-    data class Support(
-        @SerialName("text")
-        val text: String?,
-        @SerialName("url")
-        val url: String?
-    )
 
     @Serializable
     data class Data(
@@ -41,4 +35,33 @@ data class ReqresResponse(
         val lastName: String?
     )
 
+    @Serializable
+    data class Support(
+        @SerialName("text")
+        val text: String?,
+        @SerialName("url")
+        val url: String?
+    )
+}
+
+fun ReqresResponse.toReqresEntity(): ReqresEntity {
+    return ReqresEntity(
+        data = data?.map { data ->
+            ReqresEntity.Data(
+                avatar = data?.avatar.orEmpty(),
+                email = data?.email.orEmpty(),
+                firstName = data?.firstName.orEmpty(),
+                id = data?.id ?: 0,
+                lastName = data?.lastName.orEmpty()
+            )
+        } ?: emptyList(),
+        page = page ?: 0,
+        perPage = perPage ?: 0,
+        support = ReqresEntity.Support(
+            text = support?.text.orEmpty(),
+            url = support?.url.orEmpty()
+        ),
+        total = total ?: 0,
+        totalPages = totalPages ?: 0
+    )
 }

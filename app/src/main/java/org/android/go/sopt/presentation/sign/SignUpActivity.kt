@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.android.go.sopt.R
 import org.android.go.sopt.data.api.ApiFactory
-import org.android.go.sopt.data.model.sopt.SoptSignUpRequest
+import org.android.go.sopt.domain.entity.sopt.SoptSignUpRequestEntity
 import org.android.go.sopt.databinding.ActivitySignUpBinding
 import org.android.go.sopt.showSnack
 
@@ -63,7 +63,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun startSignUp(id: String, password: String, name: String, skill: String) {
         lifecycleScope.launch {
-            val response = ApiFactory.signUpService.postSignUp(SoptSignUpRequest(id, password, name, skill))
+            val response = ApiFactory.signUpService.postSignUp(SoptSignUpRequestEntity(id, password, name, skill))
             if (response.isSuccessful && response.body()?.status == 200) {
                 finish()
             } else {

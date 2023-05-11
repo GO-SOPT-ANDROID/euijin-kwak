@@ -2,6 +2,7 @@ package org.android.go.sopt.data.model.sopt
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.android.go.sopt.domain.entity.sopt.SoptSignUpResponseEntity
 
 @Serializable
 data class SoptSignUpResponse(
@@ -20,3 +21,12 @@ data class SoptSignUpResponse(
         val skill: String? = null,
     )
 }
+
+fun SoptSignUpResponse.toSoptSignUpResponseEntity() = SoptSignUpResponseEntity(
+    status = status ?: 0,
+    message = message ?: "",
+    data = SoptSignUpResponseEntity.SignUpData(
+        name = data?.name ?: "",
+        skill = data?.skill ?: ""
+    )
+)

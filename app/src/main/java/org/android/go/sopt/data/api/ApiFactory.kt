@@ -20,12 +20,4 @@ object ApiFactory {
             .build()
             .create()
     }
-
-    val reqresService: ReqresService by lazy {
-        Retrofit.Builder()
-            .baseUrl(UrlInfo.REQRES_BASE_URL)
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-            .build()
-            .create()
-    }
 }

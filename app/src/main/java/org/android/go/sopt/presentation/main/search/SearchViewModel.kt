@@ -32,7 +32,7 @@ class SearchViewModel @Inject constructor(private val kakaoRepository: KakaoRepo
                     }
                 }
             } ?: kotlin.run {
-                Log.d("SearchViewModel", "search: null")
+                _searchViewState.value = SearchViewState.ERROR
             }
         }
     }
