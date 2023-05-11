@@ -38,6 +38,12 @@ class HomeFragment : Fragment() {
         initObserve()
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        reqresAdapter = null
+        super.onDestroyView()
+    }
+
     private fun initObserve() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.userListStateFlow.collectLatest {
@@ -57,12 +63,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        reqresAdapter = null
-        super.onDestroyView()
     }
 
     private fun initRecyclerView() {

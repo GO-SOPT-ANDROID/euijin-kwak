@@ -9,7 +9,8 @@ import org.android.go.sopt.databinding.ItemKakaoResultBinding
 import org.android.go.sopt.domain.entity.kakao.KakaoSearchWebEntity
 import org.android.go.sopt.extension.fromHtmlLegacy
 
-class KakaoSearchResultAdapter: ListAdapter<KakaoSearchWebEntity.Document, KakaoSearchResultAdapter.KakaoSearchResultViewHolder>(diffUtil) {
+class KakaoSearchResultAdapter(private val onClickItem: (String) -> Unit) :
+    ListAdapter<KakaoSearchWebEntity.Document, KakaoSearchResultAdapter.KakaoSearchResultViewHolder>(diffUtil) {
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<KakaoSearchWebEntity.Document>() {
@@ -24,18 +25,30 @@ class KakaoSearchResultAdapter: ListAdapter<KakaoSearchWebEntity.Document, Kakao
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KakaoSearchResultViewHolder {
-        return KakaoSearchResultViewHolder(ItemKakaoResultBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return KakaoSearchResultViewHolder(
+            ItemKakaoResultBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            ), onClickItem
+        )
     }
 
     override fun onBindViewHolder(holder: KakaoSearchResultViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 
-    class KakaoSearchResultViewHolder(private val binding:ItemKakaoResultBinding):ViewHolder(binding.root) {
-        fun bind(item:KakaoSearchWebEntity.Document) {
+    class KakaoSearchResultViewHolder(
+        private val binding: ItemKakaoResultBinding,
+        private val onClickItem: (String) -> Unit
+    ) : ViewHolder(binding.root) {
+        fun bind(item: KakaoSearchWebEntity.Document) {
             with(binding) {
                 tvTitle.text = item.title.fromHtmlLegacy()
                 tvContents.text = item.contents.fromHtmlLegacy()
+            }
+            itemView.setOnClickListener {
+                onClickItem(item.url)
             }
         }
     }

@@ -1,8 +1,10 @@
 package org.android.go.sopt.presentation.main.search
 
 import android.app.SearchManager
+import android.content.Intent
 import android.database.Cursor
 import android.database.MatrixCursor
+import android.net.Uri
 import android.os.Bundle
 import android.provider.BaseColumns
 import android.view.LayoutInflater
@@ -28,7 +30,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SearchViewModel by viewModels()
-    private var kakaoSearchResultAdapter = KakaoSearchResultAdapter()
+    private var kakaoSearchResultAdapter: KakaoSearchResultAdapter? = null
 
     private var searchJob: Job? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -41,13 +43,41 @@ class SearchFragment : Fragment() {
         initObserve()
     }
 
-    private fun initRecyclerView() {
-        binding.rvKakaoSearchResult.adapter = kakaoSearchResultAdapter
-    }
-
     override fun onDestroyView() {
         _binding = null
+        kakaoSearchResultAdapter = null
         super.onDestroyView()
+    }
+
+    private fun initObserve() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.searchViewState.collectLatest { searchViewState ->
+                    when (searchViewState) {
+                        SearchViewState.UnInitialized -> {
+                            initSearchView()
+                            initRecyclerView()
+                        }
+
+                        is SearchViewState.Loading -> {
+                            //TODO Loading 힘들어요...
+                        }
+
+                        is SearchViewState.SuccessSearchKeyword -> {
+                            changeSearchTitleListener(searchViewState.data)
+                        }
+
+                        is SearchViewState.SuccessSearchWeb -> {
+                            kakaoSearchResultAdapter?.submitList(searchViewState.data.documents)
+                        }
+
+                        else -> {
+                            //TODO ERROR Handling
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun initSearchView() {
@@ -89,35 +119,11 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun initObserve() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.searchViewState.collectLatest { searchViewState ->
-                    when (searchViewState) {
-                        SearchViewState.UnInitialized -> {
-                            initSearchView()
-                            initRecyclerView()
-                        }
-
-                        is SearchViewState.Loading -> {
-                            //TODO Loading
-                        }
-
-                        is SearchViewState.SuccessSearchKeyword -> {
-                            changeSearchTitleListener(searchViewState.data)
-                        }
-
-                        is SearchViewState.SuccessSearchWeb -> {
-                            kakaoSearchResultAdapter.submitList(searchViewState.data.documents)
-                        }
-
-                        else -> {
-                            //TODO ERROR Handling
-                        }
-                    }
-                }
-            }
+    private fun initRecyclerView() {
+        kakaoSearchResultAdapter = KakaoSearchResultAdapter { url ->
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
         }
+        binding.rvKakaoSearchResult.adapter = kakaoSearchResultAdapter
     }
 
     private fun changeSearchTitleListener(searchResult: Pair<List<String>, String>) {
