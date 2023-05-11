@@ -2,6 +2,7 @@ package org.android.go.sopt.presentation.main.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -10,6 +11,7 @@ import org.android.go.sopt.domain.repository.ReqresRepository
 import org.android.go.sopt.presentation.UIState
 import javax.inject.Inject
 
+@HiltViewModel
 class HomeViewModel @Inject constructor(private val reqresRepository: ReqresRepository) : ViewModel() {
 
     private val _userListStateFlow = MutableStateFlow<UIState<ReqresEntity>>(UIState.UnInitialized)

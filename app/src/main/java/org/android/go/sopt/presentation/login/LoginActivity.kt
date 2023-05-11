@@ -10,9 +10,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.android.go.sopt.R
-import org.android.go.sopt.data.api.ApiFactory
-import org.android.go.sopt.data.model.sopt.SoptLoginRequest
 import org.android.go.sopt.databinding.ActivityLoginBinding
 import org.android.go.sopt.extension.showToast
 import org.android.go.sopt.presentation.UIState
