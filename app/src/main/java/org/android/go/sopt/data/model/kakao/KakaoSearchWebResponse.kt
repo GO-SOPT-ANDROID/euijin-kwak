@@ -35,26 +35,18 @@ data class KakaoSearchWebResponse(
     )
 }
 
-fun KakaoSearchWebResponse.toKakaoSearchWebEntity(): KakaoSearchWebEntity {
-    val documentList = listOf<KakaoSearchWebEntity.Document>()
-    documents?.forEach {
-        documentList.plus(
-            KakaoSearchWebEntity.Document(
-                it?.contents,
-                it?.datetime,
-                it?.title,
-                it?.url
-            )
+fun KakaoSearchWebResponse.toKakaoSearchWebEntity() = KakaoSearchWebEntity(
+    documents = documents?.map {
+        KakaoSearchWebEntity.Document(
+            contents = it?.contents ?: "",
+            it?.datetime ?: "",
+            it?.title ?: "",
+            it?.url ?: ""
         )
-    }
-
-    return KakaoSearchWebEntity(
-        documentList,
-        KakaoSearchWebEntity.Meta(
-            meta?.isEnd,
-            meta?.pageableCount,
-            meta?.totalCount
-        )
+    } ?: emptyList(),
+    meta = KakaoSearchWebEntity.Meta(
+        meta?.isEnd ?: false,
+        meta?.pageableCount ?: 0,
+        meta?.totalCount ?: 0
     )
-}
-
+)

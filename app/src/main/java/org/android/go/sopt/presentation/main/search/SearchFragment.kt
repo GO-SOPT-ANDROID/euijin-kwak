@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,15 +14,21 @@ import android.widget.CursorAdapter
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.android.go.sopt.databinding.FragmentSearchBinding
-
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+    private val viewModel: SearchViewModel by viewModels()
 
+    private var searchJob: Job? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
@@ -29,39 +36,31 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initObserve()
+        initSearchView()
+    }
 
-        val searchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchableInfo = searchManager.getSearchableInfo(requireActivity().componentName)
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 
+    private fun initSearchView() {
         binding.searchView.run {
-            suggestionsAdapter = SearchResultAdapter(
-                requireContext(),
-                null,
-                false
-            )
-
-
+            suggestionsAdapter = SearchResultAdapter(requireContext(), null, false)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    if (newText.isNullOrEmpty()) {
-                        suggestionsAdapter.changeCursor(null)
-                    } else {
-                        val suggestions = listOf(
-                            "검색어1",
-                            "검색어2",
-                            "검색어3"
-                        ).filter { it.contains(newText) }
-
-                        // mock 데이터를 Cursor에 추가
-                        val cursor = MatrixCursor(arrayOf(BaseColumns._ID, SearchManager.SUGGEST_COLUMN_TEXT_1))
-                        suggestions.forEachIndexed { index, suggestion ->
-                            cursor.addRow(arrayOf(index, suggestion))
+                    searchJob?.cancel() // 이전 검색어 작업을 취소합니다.
+                    if (!newText.isNullOrEmpty()) {
+                        searchJob = lifecycleScope.launch {
+                            delay(500)
+                            Log.d("SearchFragment", "onQueryTextChange: $newText")
+                            viewModel.search(newText)
                         }
-                        suggestionsAdapter.changeCursor(cursor)
                     }
                     return true
                 }
@@ -79,12 +78,24 @@ class SearchFragment : Fragment() {
                     return true
                 }
             })
+
         }
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
+    private fun initObserve() {
+        binding.searchView.run {
+            viewModel.searchLiveData.observe(viewLifecycleOwner) { searchResult ->
+                val defaultSuggestions = searchResult.second.documents.map { document ->
+                    document.title.replace("<b>", "").replace("</b>", "")
+                }
+                val suggestions = defaultSuggestions.filter { it.contains(searchResult.first) }
+                val cursor = MatrixCursor(arrayOf(BaseColumns._ID, SearchManager.SUGGEST_COLUMN_TEXT_1))
+                suggestions.forEachIndexed { index, suggestion ->
+                    cursor.addRow(arrayOf(index, suggestion))
+                }
+                suggestionsAdapter.changeCursor(cursor)
+            }
+        }
     }
 
     class SearchResultAdapter(context: Context, cursor: Cursor?, autoRequery: Boolean) :

@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class KakaoRepositoryImpl @Inject constructor(private val kakaoService: KakaoService) : KakaoRepository {
     override suspend fun getSearchWeb(keyword: String): KakaoSearchWebEntity? {
-        val response = kakaoService.getSearchWeb(keyword)
+        val response = kakaoService.getSearchWeb(keyword = keyword)
         return if (response.isSuccessful) {
             return response.body()?.toKakaoSearchWebEntity()
         } else {
