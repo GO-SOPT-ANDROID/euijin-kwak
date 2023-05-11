@@ -92,7 +92,7 @@ class SearchFragment : Fragment() {
     }
 
     private suspend fun initObserve() {
-        repeatOnLifecycle(Lifecycle.State.CREATED) {
+        viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
             viewModel.searchViewState.collectLatest { searchViewState ->
                 when (searchViewState) {
                     SearchViewState.UnInitialized -> {
