@@ -30,6 +30,14 @@ class LoginActivity : AppCompatActivity() {
         initObserve()
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.run {
+            etId.setText("")
+            etPassword.setText("")
+        }
+    }
+
     private fun initObserve() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
