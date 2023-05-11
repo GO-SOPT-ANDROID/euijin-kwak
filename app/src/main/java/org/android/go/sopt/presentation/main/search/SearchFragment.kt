@@ -1,24 +1,25 @@
 package org.android.go.sopt.presentation.main.search
 
 import android.app.SearchManager
-import android.content.Context
 import android.database.Cursor
 import android.database.MatrixCursor
 import android.os.Bundle
 import android.provider.BaseColumns
-import android.util.Log
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CursorAdapter
 import android.widget.SearchView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.android.go.sopt.databinding.FragmentSearchBinding
 
@@ -27,6 +28,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SearchViewModel by viewModels()
+    private var kakaoSearchResultAdapter = KakaoSearchResultAdapter()
 
     private var searchJob: Job? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -36,8 +38,13 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initObserve()
-        initSearchView()
+        lifecycleScope.launch {
+            initObserve()
+        }
+    }
+
+    private fun initRecyclerView() {
+        binding.rvKakaoSearchResult.adapter = kakaoSearchResultAdapter
     }
 
     override fun onDestroyView() {
@@ -46,20 +53,22 @@ class SearchFragment : Fragment() {
     }
 
     private fun initSearchView() {
+        val searchKeyword = MutableStateFlow("")
         binding.searchView.run {
-            suggestionsAdapter = SearchResultAdapter(requireContext(), null, false)
+            suggestionsAdapter = SearchCursorAdapter(requireContext(), null, false, searchKeyword)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
+                    viewModel.search(searchKeyword.value, SearchViewModel.SearchType.SEARCH_WEB)
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    searchJob?.cancel() // 이전 검색어 작업을 취소합니다.
+                    searchJob?.cancel()
                     if (!newText.isNullOrEmpty()) {
+                        searchKeyword.value = newText
                         searchJob = lifecycleScope.launch {
                             delay(500)
-                            Log.d("SearchFragment", "onQueryTextChange: $newText")
-                            viewModel.search(newText)
+                            viewModel.search(newText, SearchViewModel.SearchType.SEARCH_KEYWORD)
                         }
                     }
                     return true
@@ -75,38 +84,55 @@ class SearchFragment : Fragment() {
                     val cursor = suggestionsAdapter.getItem(position) as? Cursor
                     val selection = cursor?.getString(1)
                     setQuery(selection, true)
+                    viewModel.search(searchKeyword.value, SearchViewModel.SearchType.SEARCH_WEB)
                     return true
                 }
             })
-
         }
     }
 
-    private fun initObserve() {
-        binding.searchView.run {
-            viewModel.searchLiveData.observe(viewLifecycleOwner) { searchResult ->
-                val defaultSuggestions = searchResult.second.documents.map { document ->
-                    document.title.replace("<b>", "").replace("</b>", "")
+    private suspend fun initObserve() {
+        repeatOnLifecycle(Lifecycle.State.CREATED) {
+            viewModel.searchViewState.collectLatest { searchViewState ->
+                when (searchViewState) {
+                    SearchViewState.UnInitialized -> {
+                        initSearchView()
+                        initRecyclerView()
+                    }
+
+                    is SearchViewState.Loading -> {
+                        // 로딩
+                    }
+
+                    is SearchViewState.SuccessSearchKeyword -> {
+                        changeSearchTitleListener(searchViewState.data)
+                    }
+
+                    is SearchViewState.SuccessSearchWeb -> {
+                        kakaoSearchResultAdapter.submitList(searchViewState.data.documents)
+                    }
+
+                    else -> {
+
+                    }
                 }
-                val suggestions = defaultSuggestions.filter { it.contains(searchResult.first) }
-                val cursor = MatrixCursor(arrayOf(BaseColumns._ID, SearchManager.SUGGEST_COLUMN_TEXT_1))
-                suggestions.forEachIndexed { index, suggestion ->
-                    cursor.addRow(arrayOf(index, suggestion))
-                }
-                suggestionsAdapter.changeCursor(cursor)
             }
         }
     }
 
-    class SearchResultAdapter(context: Context, cursor: Cursor?, autoRequery: Boolean) :
-        CursorAdapter(context, cursor, autoRequery) {
-
-        override fun newView(context: Context?, cursor: Cursor?, parent: ViewGroup?): View {
-            return LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false)
-        }
-
-        override fun bindView(view: View?, context: Context?, cursor: Cursor?) {
-            view?.findViewById<TextView>(android.R.id.text1)?.text = cursor?.getString(1)
+    private fun changeSearchTitleListener(searchResult: Pair<List<String>, String>) {
+        binding.searchView.run {
+            val suggestions = replaceSuggestionList(searchResult.first).filter { it.contains(searchResult.second) }
+            val cursor = MatrixCursor(arrayOf(BaseColumns._ID, SearchManager.SUGGEST_COLUMN_TEXT_1))
+            suggestions.forEachIndexed { index, suggestion ->
+                cursor.addRow(arrayOf(index, suggestion))
+            }
+            suggestionsAdapter.changeCursor(cursor)
         }
     }
+
+    private fun replaceSuggestionList(searchResultTitle: List<String>) =
+        searchResultTitle.map { title ->
+            Html.fromHtml(title, Html.FROM_HTML_MODE_LEGACY).toString()
+        }
 }
