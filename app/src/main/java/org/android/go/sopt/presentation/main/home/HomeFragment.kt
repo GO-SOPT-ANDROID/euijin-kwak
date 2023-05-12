@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.android.go.sopt.databinding.FragmentHomeBinding
 import org.android.go.sopt.presentation.UIState
 import org.android.go.sopt.presentation.main.home.reqres.ReqresAdapter
@@ -44,24 +46,22 @@ class HomeFragment : Fragment() {
     }
 
     private fun initObserve() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.userListStateFlow.collectLatest {
-                when (it) {
-                    is UIState.UnInitialized -> {
-                        initRecyclerView()
-                        viewModel.getUsers(2)
-                    }
-
-                    is UIState.Loading -> {}
-
-                    is UIState.Success -> {
-                        reqresAdapter?.submitList(it.data.data)
-                    }
-
-                    is UIState.Error -> {}
+        viewModel.userListStateFlow.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED).onEach {
+            when (it) {
+                is UIState.UnInitialized -> {
+                    initRecyclerView()
+                    viewModel.getUsers(2)
                 }
+
+                is UIState.Loading -> {}
+
+                is UIState.Success -> {
+                    reqresAdapter?.submitList(it.data.data)
+                }
+
+                is UIState.Error -> {}
             }
-        }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun initRecyclerView() {

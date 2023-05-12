@@ -5,11 +5,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.android.go.sopt.R
 import org.android.go.sopt.databinding.ActivitySignUpBinding
 import org.android.go.sopt.extension.showToast
@@ -31,35 +31,36 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun initObserve() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.signUpState.collectLatest {
-                    when (it) {
-                        is SignUpState.UnInitialized -> {
-                            initViews()
-                            initEditTextError()
-                        }
-                        is SignUpState.Loading -> {}
-                        is SignUpState.DuplicateId -> {
-                            isDuplicatedId = false
-                            binding.root.showSnack(getString(R.string.sign_up_duplicate_id_message))
-                        }
-                        is SignUpState.NonDuplicateId -> {
-                            isDuplicatedId = false
-                            binding.btDuplicateCheck.isEnabled = false
-                            binding.root.showSnack(getString(R.string.sign_up_available_id_message))
-                        }
-                        is SignUpState.SuccessSignUp -> {
-                            showToast(getString(R.string.sign_up_success_message))
-                            finish()
-                        }
-                        is SignUpState.Error -> {
-                            binding.root.showSnack(getString(R.string.sign_up_failed_message))
-                        }
-                    }
+        viewModel.signUpState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
+            when (it) {
+                is SignUpState.UnInitialized -> {
+                    initViews()
+                    initEditTextError()
+                }
+
+                is SignUpState.Loading -> {}
+                is SignUpState.DuplicateId -> {
+                    isDuplicatedId = false
+                    binding.root.showSnack(getString(R.string.sign_up_duplicate_id_message))
+                }
+
+                is SignUpState.NonDuplicateId -> {
+                    isDuplicatedId = false
+                    binding.btDuplicateCheck.isEnabled = false
+                    binding.root.showSnack(getString(R.string.sign_up_available_id_message))
+                }
+
+                is SignUpState.SuccessSignUp -> {
+                    showToast(getString(R.string.sign_up_success_message))
+                    finish()
+                }
+
+                is SignUpState.Error -> {
+                    binding.root.showSnack(getString(R.string.sign_up_failed_message))
                 }
             }
-        }
+        }.launchIn(lifecycleScope)
+
     }
 
     private fun initViews() {

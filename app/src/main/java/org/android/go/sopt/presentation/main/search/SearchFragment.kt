@@ -14,13 +14,14 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.android.go.sopt.databinding.FragmentSearchBinding
 import org.android.go.sopt.extension.fromHtmlLegacy
@@ -50,34 +51,30 @@ class SearchFragment : Fragment() {
     }
 
     private fun initObserve() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.searchViewState.collectLatest { searchViewState ->
-                    when (searchViewState) {
-                        SearchViewState.UnInitialized -> {
-                            initSearchView()
-                            initRecyclerView()
-                        }
+        viewModel.searchViewState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED).onEach { searchViewState ->
+            when (searchViewState) {
+                SearchViewState.UnInitialized -> {
+                    initSearchView()
+                    initRecyclerView()
+                }
 
-                        is SearchViewState.Loading -> {
-                            //TODO Loading 힘들어요...
-                        }
+                is SearchViewState.Loading -> {
+                    //TODO Loading 힘들어요...
+                }
 
-                        is SearchViewState.SuccessSearchKeyword -> {
-                            changeSearchTitleListener(searchViewState.data)
-                        }
+                is SearchViewState.SuccessSearchKeyword -> {
+                    changeSearchTitleListener(searchViewState.data)
+                }
 
-                        is SearchViewState.SuccessSearchWeb -> {
-                            kakaoSearchResultAdapter?.submitList(searchViewState.data.documents)
-                        }
+                is SearchViewState.SuccessSearchWeb -> {
+                    kakaoSearchResultAdapter?.submitList(searchViewState.data.documents)
+                }
 
-                        else -> {
-                            //TODO ERROR Handling
-                        }
-                    }
+                else -> {
+                    //TODO ERROR Handling
                 }
             }
-        }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun initSearchView() {

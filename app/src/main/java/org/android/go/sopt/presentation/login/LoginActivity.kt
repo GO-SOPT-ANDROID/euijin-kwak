@@ -5,11 +5,11 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.android.go.sopt.databinding.ActivityLoginBinding
 import org.android.go.sopt.extension.showToast
 import org.android.go.sopt.presentation.UIState
@@ -39,29 +39,25 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initObserve() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.loginStateFlow.collectLatest {
-                    when (it) {
-                        is UIState.UnInitialized -> {
-                            initViews()
-                        }
+        viewModel.loginStateFlow.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach {
+            when (it) {
+                is UIState.UnInitialized -> {
+                    initViews()
+                }
 
-                        is UIState.Loading -> {
-                        }
+                is UIState.Loading -> {
+                }
 
-                        is UIState.Success -> {
-                            showToast("로그인 성공")
-                            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                        }
+                is UIState.Success -> {
+                    showToast("로그인 성공")
+                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                }
 
-                        else -> {
-                            showToast("로그인 실패")
-                        }
-                    }
+                else -> {
+                    showToast("로그인 실패")
                 }
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 
     private fun initViews() {
