@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import org.android.go.sopt.databinding.FragmentSearchBinding
 import org.android.go.sopt.domain.entity.kakao.KakaoSearchWebEntity
 import org.android.go.sopt.extension.fromHtmlLegacy
-import org.android.go.sopt.presentation.state.BaseResult
+import org.android.go.sopt.data.model.BaseResult
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {

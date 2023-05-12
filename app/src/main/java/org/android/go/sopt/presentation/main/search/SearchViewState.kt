@@ -1,7 +1,7 @@
 package org.android.go.sopt.presentation.main.search
 
 import org.android.go.sopt.domain.entity.kakao.KakaoSearchWebEntity
-import org.android.go.sopt.presentation.state.BaseResult
+import org.android.go.sopt.data.model.BaseResult
 
 sealed class SearchViewState {
     object UnInitialized : SearchViewState()

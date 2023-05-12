@@ -1,4 +1,4 @@
-package org.android.go.sopt.presentation.state
+package org.android.go.sopt.data.model
 
 sealed class ApiResponse<out T> {
     object Loading : ApiResponse<Nothing>()
