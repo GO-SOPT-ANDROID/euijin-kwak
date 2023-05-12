@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.android.go.sopt.domain.repository.KakaoRepository
 import javax.inject.Inject
@@ -17,20 +18,19 @@ class SearchViewModel @Inject constructor(private val kakaoRepository: KakaoRepo
 
     fun search(keyword: String, searchType: SearchType) {
         viewModelScope.launch {
-            _searchViewState.value = SearchViewState.Loading
-            kakaoRepository.getSearchWeb(keyword)?.let {
+            kakaoRepository.getSearchWeb(keyword).onStart {
+                _searchViewState.value = SearchViewState.Loading
+            }.collect {
                 when (searchType) {
                     SearchType.SEARCH_KEYWORD -> {
                         _searchViewState.value =
-                            SearchViewState.SuccessSearchKeyword(Pair(it.documents.map { document -> document.title }, keyword))
+                            SearchViewState.SuccessSearchKeyword(Pair(it, keyword))
                     }
 
                     SearchType.SEARCH_WEB -> {
                         _searchViewState.value = SearchViewState.SuccessSearchWeb(it)
                     }
                 }
-            } ?: kotlin.run {
-                _searchViewState.value = SearchViewState.ERROR
             }
         }
     }

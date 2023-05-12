@@ -24,7 +24,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.android.go.sopt.databinding.FragmentSearchBinding
+import org.android.go.sopt.domain.entity.kakao.KakaoSearchWebEntity
 import org.android.go.sopt.extension.fromHtmlLegacy
+import org.android.go.sopt.presentation.state.BaseResult
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
@@ -63,11 +65,11 @@ class SearchFragment : Fragment() {
                 }
 
                 is SearchViewState.SuccessSearchKeyword -> {
-                    changeSearchTitleListener(searchViewState.data)
+                    handleSuccessSearchKeywordState(searchViewState.data)
                 }
 
                 is SearchViewState.SuccessSearchWeb -> {
-                    kakaoSearchResultAdapter?.submitList(searchViewState.data.documents)
+                    handleSuccessSearchWeb(searchViewState.data)
                 }
 
                 else -> {
@@ -138,4 +140,35 @@ class SearchFragment : Fragment() {
         searchResultTitle.map { title ->
             title.fromHtmlLegacy()
         }
+
+    private fun handleSuccessSearchKeywordState(data: Pair<BaseResult<KakaoSearchWebEntity>, String>) {
+        when (data.first) {
+            is BaseResult.Success -> {
+                val result = data.first as BaseResult.Success
+                changeSearchTitleListener(
+                    Pair(
+                        result.data.documents.map { it.title },
+                        data.second
+                    )
+                )
+            }
+
+            is BaseResult.Error -> {
+                // TODO: ERROR Handling
+            }
+        }
+    }
+
+
+    private fun handleSuccessSearchWeb(data: BaseResult<KakaoSearchWebEntity>) {
+        when (data) {
+            is BaseResult.Success -> {
+                kakaoSearchResultAdapter?.submitList(data.data.documents)
+            }
+
+            is BaseResult.Error -> {
+                //TODO ERROR Handling
+            }
+        }
+    }
 }

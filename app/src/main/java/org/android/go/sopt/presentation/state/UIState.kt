@@ -1,4 +1,4 @@
-package org.android.go.sopt.presentation
+package org.android.go.sopt.presentation.state
 
 sealed class UIState<out T>(val _data: T?) {
     object UnInitialized : UIState<Nothing>(_data = null)

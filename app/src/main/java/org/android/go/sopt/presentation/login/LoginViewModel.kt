@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import org.android.go.sopt.data.model.sopt.SoptLoginRequest
 import org.android.go.sopt.domain.entity.sopt.SoptLoginResponseEntity
 import org.android.go.sopt.domain.repository.SoptRepository
-import org.android.go.sopt.presentation.UIState
+import org.android.go.sopt.presentation.state.UIState
 import javax.inject.Inject
 
 @HiltViewModel

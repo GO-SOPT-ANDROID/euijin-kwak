@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.android.go.sopt.databinding.ActivityLoginBinding
 import org.android.go.sopt.extension.showToast
-import org.android.go.sopt.presentation.UIState
+import org.android.go.sopt.presentation.state.UIState
 import org.android.go.sopt.presentation.main.MainActivity
 import org.android.go.sopt.presentation.sign.SignUpActivity
 

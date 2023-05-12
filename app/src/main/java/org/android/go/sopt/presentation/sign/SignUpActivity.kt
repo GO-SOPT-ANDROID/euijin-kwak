@@ -38,7 +38,10 @@ class SignUpActivity : AppCompatActivity() {
                     initEditTextError()
                 }
 
-                is SignUpState.Loading -> {}
+                is SignUpState.Loading -> {
+
+                }
+
                 is SignUpState.DuplicateId -> {
                     isDuplicatedId = false
                     binding.root.showSnack(getString(R.string.sign_up_duplicate_id_message))
@@ -60,7 +63,6 @@ class SignUpActivity : AppCompatActivity() {
                 }
             }
         }.launchIn(lifecycleScope)
-
     }
 
     private fun initViews() {

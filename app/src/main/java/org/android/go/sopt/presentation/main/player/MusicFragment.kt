@@ -73,6 +73,10 @@ class MusicFragment : Fragment() {
                     successHandler(it.musicList)
                 }
 
+                is MusicState.Loading -> {
+                    //TODO 다음주에 계속...
+                }
+
                 else -> {
                     //TODO 다음주에 계속...
                 }

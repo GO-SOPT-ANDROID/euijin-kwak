@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.android.go.sopt.domain.entity.reqres.ReqresEntity
 import org.android.go.sopt.domain.repository.ReqresRepository
-import org.android.go.sopt.presentation.UIState
+import org.android.go.sopt.presentation.state.UIState
 import javax.inject.Inject
 
 @HiltViewModel

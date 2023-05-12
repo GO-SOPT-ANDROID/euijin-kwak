@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.android.go.sopt.databinding.FragmentHomeBinding
-import org.android.go.sopt.presentation.UIState
+import org.android.go.sopt.presentation.state.UIState
 import org.android.go.sopt.presentation.main.home.reqres.ReqresAdapter
 
 @AndroidEntryPoint
