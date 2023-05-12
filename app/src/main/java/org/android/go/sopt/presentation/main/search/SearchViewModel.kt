@@ -18,16 +18,15 @@ class SearchViewModel @Inject constructor(private val kakaoRepository: KakaoRepo
 
     fun search(keyword: String, searchType: SearchType) {
         viewModelScope.launch {
+            _searchViewState.value = SearchViewState.Loading
             kakaoRepository.getSearchWeb(keyword)?.let {
                 when (searchType) {
                     SearchType.SEARCH_KEYWORD -> {
-                        _searchViewState.value = SearchViewState.Loading
                         _searchViewState.value =
                             SearchViewState.SuccessSearchKeyword(Pair(it.documents.map { document -> document.title }, keyword))
                     }
 
                     SearchType.SEARCH_WEB -> {
-                        _searchViewState.value = SearchViewState.Loading
                         _searchViewState.value = SearchViewState.SuccessSearchWeb(it)
                     }
                 }

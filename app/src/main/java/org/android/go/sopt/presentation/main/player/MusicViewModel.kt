@@ -22,16 +22,16 @@ class MusicViewModel @Inject constructor(private val musicRepository: MusicRepos
     fun getMusicList() {
         viewModelScope.launch(Dispatchers.IO) {
             musicRepository.getAll().collect {
-                val musicList = it.map {musicData-> musicData.toMusicItem() }
                 _musicState.value = MusicState.Loading
+                val musicList = it.map {musicData-> musicData.toMusicItem() }
                 _musicState.value = MusicState.SuccessMusicList(musicList)
             }
         }
     }
 
     fun getLatestMusic() {
+        _musicState.value = MusicState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            _musicState.value = MusicState.Loading
             _musicState.value = MusicState.SuccessLatestMusic(musicRepository.getLatestMusic().toMusicItem())
         }
     }

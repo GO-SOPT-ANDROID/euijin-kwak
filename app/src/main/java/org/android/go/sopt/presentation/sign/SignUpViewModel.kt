@@ -17,8 +17,8 @@ class SignUpViewModel @Inject constructor(private val soptRepository: SoptReposi
 
     fun checkDuplicatedId(id:String) {
         viewModelScope.launch {
+            _signUpState.value = SignUpState.Loading
             soptRepository.getUserInfo(id)?.data?.Id?.let {
-                _signUpState.value = SignUpState.Loading
                 _signUpState.value = SignUpState.DuplicateId(it)
             } ?: kotlin.run {
                 _signUpState.value = SignUpState.NonDuplicateId
@@ -28,8 +28,8 @@ class SignUpViewModel @Inject constructor(private val soptRepository: SoptReposi
 
     fun signUp(id: String, password: String, name: String, skill: String) {
         viewModelScope.launch {
+            _signUpState.value = SignUpState.Loading
             soptRepository.postSignUp(SoptSignUpRequestEntity(id, password, name, skill))?.let {
-                _signUpState.value = SignUpState.Loading
                 _signUpState.value = SignUpState.SuccessSignUp(it)
             } ?: kotlin.run {
                 _signUpState.value = SignUpState.Error

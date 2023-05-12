@@ -19,8 +19,8 @@ class HomeViewModel @Inject constructor(private val reqresRepository: ReqresRepo
 
     fun getUsers(page: Int) {
         viewModelScope.launch {
+            _userListStateFlow.value = UIState.Loading
             reqresRepository.getUsers(page)?.let {
-                _userListStateFlow.value = UIState.Loading
                 _userListStateFlow.value = UIState.Success(it)
             } ?: kotlin.run {
                 _userListStateFlow.value = UIState.Error

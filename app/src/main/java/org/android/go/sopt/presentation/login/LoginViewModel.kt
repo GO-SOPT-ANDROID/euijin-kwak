@@ -20,8 +20,8 @@ class LoginViewModel @Inject constructor(private val soptRepository: SoptReposit
 
     fun login(id: String, password: String) {
         viewModelScope.launch {
-            soptRepository.postLogin(SoptLoginRequest(id, password))
             _loginStateFlow.value = UIState.Loading
+            soptRepository.postLogin(SoptLoginRequest(id, password))
             _loginStateFlow.value = soptRepository.postLogin(SoptLoginRequest(id, password))?.let {
                 UIState.Success(it)
             } ?: kotlin.run {
