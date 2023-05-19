@@ -1,4 +1,4 @@
-package org.android.go.sopt.presentation.main.home.music
+package org.android.go.sopt.presentation.main.player.music
 
 import androidx.recyclerview.selection.ItemKeyProvider
 import androidx.recyclerview.widget.RecyclerView

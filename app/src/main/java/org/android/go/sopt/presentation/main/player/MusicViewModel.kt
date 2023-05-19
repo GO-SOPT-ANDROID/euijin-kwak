@@ -1,7 +1,5 @@
-package org.android.go.sopt.presentation.main.home
+package org.android.go.sopt.presentation.main.player
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,33 +7,32 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import org.android.go.sopt.domain.MusicRepository
-import org.android.go.sopt.domain.entity.MusicData
+import org.android.go.sopt.domain.repository.MusicRepository
 import org.android.go.sopt.presentation.model.MusicItem
 import org.android.go.sopt.presentation.model.toMusicData
 import org.android.go.sopt.presentation.model.toMusicItem
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val musicRepository: MusicRepository) : ViewModel() {
+class MusicViewModel @Inject constructor(private val musicRepository: MusicRepository) : ViewModel() {
 
-    private val _homeState = MutableStateFlow<HomeState>(HomeState.UnInitialized)
-    val homeState: StateFlow<HomeState> get() = _homeState
+    private val _musicState = MutableStateFlow<MusicState>(MusicState.UnInitialized)
+    val musicState: StateFlow<MusicState> get() = _musicState
 
     fun getMusicList() {
         viewModelScope.launch(Dispatchers.IO) {
             musicRepository.getAll().collect {
                 val musicList = it.map {musicData-> musicData.toMusicItem() }
-                _homeState.value = HomeState.Loading
-                _homeState.value = HomeState.SuccessMusicList(musicList)
+                _musicState.value = MusicState.Loading
+                _musicState.value = MusicState.SuccessMusicList(musicList)
             }
         }
     }
 
     fun getLatestMusic() {
         viewModelScope.launch(Dispatchers.IO) {
-            _homeState.value = HomeState.Loading
-            _homeState.value = HomeState.SuccessLatestMusic(musicRepository.getLatestMusic().toMusicItem())
+            _musicState.value = MusicState.Loading
+            _musicState.value = MusicState.SuccessLatestMusic(musicRepository.getLatestMusic().toMusicItem())
         }
     }
 

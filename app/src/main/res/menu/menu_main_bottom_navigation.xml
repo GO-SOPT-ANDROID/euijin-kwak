@@ -17,4 +17,10 @@
         android:title="@string/menu_gallery"
         android:orderInCategory="1"
         android:checkable="true" />
+
+    <item android:id="@+id/menuPlayer"
+        android:icon="@drawable/ic_baseline_library_music_24"
+        android:title="@string/menu_player"
+        android:orderInCategory="1"
+        android:checkable="true" />
 </menu>

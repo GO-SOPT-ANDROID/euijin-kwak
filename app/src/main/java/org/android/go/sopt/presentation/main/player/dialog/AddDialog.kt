@@ -1,4 +1,4 @@
-package org.android.go.sopt.presentation.main.home.dialog
+package org.android.go.sopt.presentation.main.player.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
