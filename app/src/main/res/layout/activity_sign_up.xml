@@ -140,6 +140,7 @@
                 android:gravity="center"
                 android:paddingVertical="10dp"
                 android:text="@string/sign_up_complete"
+                android:enabled="@{viewModel.isSignUpEnabled}"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/tvTitle"
                 app:layout_constraintStart_toStartOf="@+id/tvTitle"

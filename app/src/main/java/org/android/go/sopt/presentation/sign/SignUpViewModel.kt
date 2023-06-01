@@ -24,8 +24,12 @@ class SignUpViewModel : ViewModel() {
     private val _passwordError = MutableLiveData<String?>()
     val passwordError: LiveData<String?> = _passwordError
 
+    private val _isSignUpEnabled: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isSignUpEnabled: StateFlow<Boolean> = _isSignUpEnabled
+
     fun onIdChanged(id: String) {
         _idInput.value = id
+        getSignUpEnabled()
         if (!idPattern.matches(id)) {
             _idError.value = ID_ERROR
         } else {
@@ -35,11 +39,16 @@ class SignUpViewModel : ViewModel() {
 
     fun onPasswordChanged(password: String) {
         _passwordInput.value = password
+        getSignUpEnabled()
         if (!passwordPattern.matches(password)) {
             _passwordError.value = PASSWORD_ERROR
         } else {
             _passwordError.value = null
         }
+    }
+
+    fun getSignUpEnabled() {
+        _isSignUpEnabled.value = idError.value == null && passwordError.value == null
     }
 
     private val _signUpLiveData = MutableLiveData<SoptSignUpResponse?>()

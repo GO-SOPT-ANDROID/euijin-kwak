@@ -14,12 +14,12 @@ class SignUpActivity : AppCompatActivity() {
     private val binding: ActivitySignUpBinding by lazy {
         DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
     }
-    private val viewModel by viewModels<SignUpViewModel>()
+    private val signUpViewModel by viewModels<SignUpViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        binding.viewModel = viewModel
+        binding.viewModel = signUpViewModel
         binding.lifecycleOwner = this
         initViews()
     }
@@ -32,7 +32,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun initObserve() {
-        viewModel.signUpLiveData.observe(this) {
+        signUpViewModel.signUpLiveData.observe(this) {
             if (it != null) {
                 showToast(getString(R.string.sign_up_complete))
                 finish()
@@ -41,7 +41,7 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.isDuplicatedId.observe(this) {
+        signUpViewModel.isDuplicatedId.observe(this) {
             if (it == true) {
                 binding.root.showSnack(getString(R.string.sign_up_duplicate_id_message))
             } else {
@@ -61,11 +61,11 @@ class SignUpActivity : AppCompatActivity() {
         with(binding) {
             btSignUpComplete.setOnClickListener {
                 if (isValid()) {
-                    val id = this@SignUpActivity.viewModel.idInput.value
-                    val password = this@SignUpActivity.viewModel.passwordInput.value
+                    val id = signUpViewModel.idInput.value
+                    val password = signUpViewModel.passwordInput.value
                     val name = etName.text.toString()
                     val skill = etSkill.text.toString()
-                    this@SignUpActivity.viewModel.signUp(id, password, name, skill)
+                    signUpViewModel.signUp(id, password, name, skill)
                 } else {
                     showSnackErrorSignUp()
                 }
@@ -75,7 +75,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun initDuplicateIdButton() {
         binding.btDuplicateCheck.setOnClickListener {
-            viewModel.startDuplicateIdCheck()
+            signUpViewModel.startDuplicateIdCheck()
         }
     }
 
@@ -85,14 +85,14 @@ class SignUpActivity : AppCompatActivity() {
                     && etPassword.error.isNullOrEmpty()
                     && etId.text.isNotEmpty()
                     && etPassword.text.isNotEmpty())
-                    && !(this@SignUpActivity.viewModel.isDuplicatedId.value ?:false)
+                    && !(signUpViewModel.isDuplicatedId.value ?:false)
         }
     }
 
     private fun showSnackErrorSignUp() {
         with(binding) {
             when {
-                this@SignUpActivity.viewModel.isDuplicatedId.value ?:false -> {
+                signUpViewModel.isDuplicatedId.value ?:false -> {
                     root.showSnack(getString(R.string.action_id_duplicate_check))
                 }
 

@@ -7,7 +7,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.android.go.sopt.BuildConfig
-import org.android.go.sopt.data.service.multi_part.MultiService
 import org.android.go.sopt.data.service.reqres.ReqresService
 import org.android.go.sopt.data.service.sopt.SoptService
 import org.android.go.sopt.util.UrlInfo
@@ -47,15 +46,6 @@ object ApiFactory {
         Retrofit.Builder()
             .baseUrl(UrlInfo.REQRES_BASE_URL)
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-            .build()
-            .create()
-    }
-
-    val multiService:MultiService by lazy {
-        Retrofit.Builder()
-            .baseUrl(BuildConfig.Multy_Part_BASE_URL)
-            .addConverterFactory(Json.asConverterFactory("multipart/form-data".toMediaType()))
-            .client(okHttpClient)
             .build()
             .create()
     }
