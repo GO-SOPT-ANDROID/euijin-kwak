@@ -1,134 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <data>
+
+        <variable
+            name="viewModel"
+            type="org.android.go.sopt.presentation.sign.SignUpViewModel" />
+    </data>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".presentation.signup.SignUpViewBindingActivity">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="30dp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/sign_up"
-            android:textColor="@color/gray"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:context=".presentation.signup.SignUpViewBindingActivity">
 
-        <ImageView
-            android:id="@+id/ivBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_arrow_back_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvTitle"
-            app:layout_constraintBottom_toBottomOf="@id/tvTitle"
-            android:padding="12dp"/>
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/sign_up"
+                android:textColor="@color/gray"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tvId"
-            style="@style/Text_SignUp_Style"
-            android:text="@string/id"
-            app:layout_constraintStart_toStartOf="@id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvTitle" />
 
-        <EditText
-            android:id="@+id/etId"
-            style="@style/EditText_Style"
-            android:hint="@string/please_input_id"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            app:layout_constraintEnd_toStartOf="@id/btDuplicateCheck"
-            app:layout_constraintStart_toStartOf="@+id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvId" />
+            <TextView
+                android:id="@+id/tvId"
+                style="@style/Text_SignUp_Style"
+                android:text="@string/id"
+                app:layout_constraintStart_toStartOf="@id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-        <Button
-            android:id="@+id/btDuplicateCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:backgroundTint="?colorSecondary"
-            android:paddingHorizontal="10dp"
-            android:text="@string/id_duplicate_check"
-            app:layout_constraintBottom_toBottomOf="@id/etId"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/etId"
-            app:layout_constraintTop_toTopOf="@id/etId" />
+            <EditText
+                android:id="@+id/etId"
+                style="@style/EditText_Style"
+                android:afterTextChanged="@{(text) -> viewModel.onIdChanged(text.toString())}"
+                android:error="@{viewModel.idError}"
+                android:hint="@string/please_input_id"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:text="@{viewModel.idInput}"
+                app:layout_constraintEnd_toStartOf="@id/btDuplicateCheck"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/tvId" />
 
-        <TextView
-            android:id="@+id/tvPassWord"
-            style="@style/Text_SignUp_Style"
-            android:text="@string/password"
-            app:layout_constraintStart_toStartOf="@+id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/etId" />
+            <Button
+                android:id="@+id/btDuplicateCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:backgroundTint="?colorSecondary"
+                android:paddingHorizontal="10dp"
+                android:text="@string/id_duplicate_check"
+                app:layout_constraintBottom_toBottomOf="@id/etId"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/etId"
+                app:layout_constraintTop_toTopOf="@id/etId" />
 
-        <EditText
-            android:id="@+id/etPassword"
-            style="@style/EditText_Style"
-            android:hint="@string/please_input_password"
-            android:importantForAutofill="no"
-            android:inputType="textPassword"
-            android:maxLength="12"
-            app:layout_constraintEnd_toEndOf="@+id/tvTitle"
-            app:layout_constraintStart_toStartOf="@+id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvPassWord" />
+            <TextView
+                android:id="@+id/tvPassWord"
+                style="@style/Text_SignUp_Style"
+                android:text="@string/password"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/etId" />
 
-        <TextView
-            android:id="@+id/tvName"
-            style="@style/Text_SignUp_Style"
-            android:text="@string/name"
-            app:layout_constraintStart_toStartOf="@+id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/etPassword" />
+            <EditText
+                android:id="@+id/etPassword"
+                style="@style/EditText_Style"
+                android:afterTextChanged="@{(text) -> viewModel.onPasswordChanged(text.toString())}"
+                android:error="@{viewModel.passwordError}"
+                android:hint="@string/please_input_password"
+                android:importantForAutofill="no"
+                android:inputType="textPassword"
+                android:maxLength="12"
+                android:text="@{viewModel.passwordInput}"
+                app:layout_constraintEnd_toEndOf="@+id/tvTitle"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/tvPassWord" />
 
-        <EditText
-            android:id="@+id/etName"
-            style="@style/EditText_Style"
-            android:hint="@string/please_input_name"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="@+id/tvTitle"
-            app:layout_constraintStart_toStartOf="@+id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvName" />
+            <TextView
+                android:id="@+id/tvName"
+                style="@style/Text_SignUp_Style"
+                android:text="@string/name"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/etPassword" />
 
-        <TextView
-            android:id="@+id/tvSpecialty"
-            style="@style/Text_SignUp_Style"
-            android:text="@string/skill"
-            app:layout_constraintStart_toStartOf="@+id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/etName" />
+            <EditText
+                android:id="@+id/etName"
+                style="@style/EditText_Style"
+                android:hint="@string/please_input_name"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="@+id/tvTitle"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/tvName" />
 
-        <EditText
-            android:id="@+id/etSkill"
-            style="@style/EditText_Style"
-            android:hint="@string/please_input_specialty"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="@+id/tvTitle"
-            app:layout_constraintStart_toStartOf="@+id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvSpecialty" />
+            <TextView
+                android:id="@+id/tvSpecialty"
+                style="@style/Text_SignUp_Style"
+                android:text="@string/skill"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/etName" />
 
-        <Button
-            android:id="@+id/btSignUpComplete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:gravity="center"
-            android:paddingVertical="10dp"
-            android:text="@string/sign_up_complete"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/tvTitle"
-            app:layout_constraintStart_toStartOf="@+id/tvTitle"
-            app:layout_constraintTop_toBottomOf="@id/etSkill" />
+            <EditText
+                android:id="@+id/etSkill"
+                style="@style/EditText_Style"
+                android:hint="@string/please_input_specialty"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="@+id/tvTitle"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/tvSpecialty" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            <Button
+                android:id="@+id/btSignUpComplete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:paddingVertical="10dp"
+                android:text="@string/sign_up_complete"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/tvTitle"
+                app:layout_constraintStart_toStartOf="@+id/tvTitle"
+                app:layout_constraintTop_toBottomOf="@id/etSkill" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
