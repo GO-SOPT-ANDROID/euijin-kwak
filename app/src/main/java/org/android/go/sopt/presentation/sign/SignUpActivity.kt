@@ -18,7 +18,6 @@ class SignUpActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(binding.root)
         binding.viewModel = signUpViewModel
         binding.lifecycleOwner = this
         initViews()
@@ -81,18 +80,18 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun isValid(): Boolean {
         with(binding) {
-            return (etId.error.isNullOrEmpty()
-                    && etPassword.error.isNullOrEmpty()
-                    && etId.text.isNotEmpty()
-                    && etPassword.text.isNotEmpty())
-                    && !(signUpViewModel.isDuplicatedId.value ?:false)
+            return (etId.error.isNullOrBlank()
+                    && etPassword.error.isNullOrBlank()
+                    && etId.text.isNotBlank()
+                    && etPassword.text.isNotBlank())
+                    && !(signUpViewModel.isDuplicatedId.value ?: false)
         }
     }
 
     private fun showSnackErrorSignUp() {
         with(binding) {
             when {
-                signUpViewModel.isDuplicatedId.value ?:false -> {
+                signUpViewModel.isDuplicatedId.value ?: false -> {
                     root.showSnack(getString(R.string.action_id_duplicate_check))
                 }
 

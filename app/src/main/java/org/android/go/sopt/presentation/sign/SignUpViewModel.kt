@@ -47,7 +47,7 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    fun getSignUpEnabled() {
+    private fun getSignUpEnabled() {
         _isSignUpEnabled.value = idError.value == null && passwordError.value == null
     }
 
@@ -57,7 +57,7 @@ class SignUpViewModel : ViewModel() {
     fun signUp(id: String, password: String, name: String, skill: String) {
         viewModelScope.launch {
             val response = ApiFactory.signUpService.postSignUp(SoptSignUpRequest(id, password, name, skill))
-            _signUpLiveData.value = if (response.isSuccessful && response.body()?.status == 200) {
+            _signUpLiveData.value = if (response.isSuccessful) {
                 response.body()
             } else {
                 null
@@ -71,7 +71,7 @@ class SignUpViewModel : ViewModel() {
     fun startDuplicateIdCheck() {
         viewModelScope.launch {
             val response = ApiFactory.signUpService.getUserInfo(idInput.value)
-            _isDuplicatedId.value = response.isSuccessful && response.body()?.status == 200
+            _isDuplicatedId.value = !response.isSuccessful
         }
     }
 
@@ -80,6 +80,6 @@ class SignUpViewModel : ViewModel() {
         private const val PASSWORD_ERROR = "Password는 영문, 숫자, 특수문자가 포함되어야 하며 6~12글자 이내로 작성해야합니다."
 
         private val idPattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,10}$")
-        private val passwordPattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{6,12}$")
+        private val passwordPattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@!%*#?&])[A-Za-z\\d$@!%*#?&]{6,12}$")
     }
 }
