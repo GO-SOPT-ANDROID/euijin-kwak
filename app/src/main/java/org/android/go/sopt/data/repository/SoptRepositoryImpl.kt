@@ -18,31 +18,16 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import javax.inject.Inject
 
-class SoptRepositoryImpl @Inject constructor(private val soptService: SoptService): SoptRepository {
-    override suspend fun getUserInfo(userId: String): SoptLoginResponseEntity? {
-        val response = soptService.getUserInfo(userId)
-        return if (response.isSuccessful) {
-             response.body()?.toSoptLoginResponseEntity()
-        } else {
-           null
-        }
+class SoptRepositoryImpl @Inject constructor(private val soptService: SoptService) : SoptRepository {
+    override suspend fun getUserInfo(userId: String): Result<SoptLoginResponseEntity> = runCatching {
+        soptService.getUserInfo(userId).toSoptLoginResponseEntity()
     }
 
-    override suspend fun postSignUp(body: SoptSignUpRequestEntity): SoptSignUpResponseEntity? {
-        val response = soptService.postSignUp(body.toSoptSignUpRequest())
-        return if (response.isSuccessful) {
-            response.body()?.toSoptSignUpResponseEntity()
-        } else {
-            null
-        }
+    override suspend fun postSignUp(body: SoptSignUpRequestEntity): Result<SoptSignUpResponseEntity> = runCatching {
+        soptService.postSignUp(body.toSoptSignUpRequest()).toSoptSignUpResponseEntity()
     }
 
-    override suspend fun postLogin(body: SoptLoginRequest): SoptLoginResponseEntity? {
-        val response = soptService.postLogin(body)
-        return if (response.isSuccessful) {
-            response.body()?.toSoptLoginResponseEntity()
-        } else {
-            null
-        }
+    override suspend fun postLogin(body: SoptLoginRequest): Result<SoptLoginResponseEntity> = runCatching {
+        soptService.postLogin(body).toSoptLoginResponseEntity()
     }
 }

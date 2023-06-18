@@ -7,10 +7,10 @@ import org.android.go.sopt.domain.entity.sopt.SoptSignUpResponseEntity
 
 interface SoptRepository {
 
-    suspend fun getUserInfo(userId: String): SoptLoginResponseEntity?
+    suspend fun getUserInfo(userId: String): Result<SoptLoginResponseEntity>
 
-    suspend fun postSignUp(body: SoptSignUpRequestEntity): SoptSignUpResponseEntity?
+    suspend fun postSignUp(body: SoptSignUpRequestEntity): Result<SoptSignUpResponseEntity>
 
-    suspend fun postLogin(body: SoptLoginRequest): SoptLoginResponseEntity?
+    suspend fun postLogin(body: SoptLoginRequest): Result<SoptLoginResponseEntity>
 
 }
