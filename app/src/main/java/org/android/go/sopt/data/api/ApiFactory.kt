@@ -2,7 +2,11 @@ package org.android.go.sopt.data.api
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import org.android.go.sopt.BuildConfig
 import org.android.go.sopt.data.service.reqres.ReqresService
 import org.android.go.sopt.data.service.sopt.SoptService
 import org.android.go.sopt.util.UrlInfo
@@ -17,9 +21,26 @@ object ApiFactory {
         Retrofit.Builder()
             .baseUrl(UrlInfo.SOPT_BASE_URL)
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .client(okHttpClient)
             .build()
             .create()
     }
+
+    private val okHttpClient:OkHttpClient = Interceptor { chain ->
+        val originalRequest = chain.request()
+        val request = originalRequest.newBuilder()
+            .header("Authorization", "token")
+            .build()
+        chain.proceed(request)
+    }.let { interceptor ->
+        OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+            .build()
+    }
+
 
     val reqresService: ReqresService by lazy {
         Retrofit.Builder()

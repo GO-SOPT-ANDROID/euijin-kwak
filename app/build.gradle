@@ -7,6 +7,9 @@ plugins {
     id 'com.google.dagger.hilt.android'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     namespace 'org.android.go.sopt'
     compileSdk 33
@@ -19,6 +22,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "Multy_Part_BASE_URL", properties['Multy_Part_BASE_URL']
+
     }
 
     buildTypes {
@@ -36,6 +42,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        dataBinding true
     }
 }
 
@@ -55,7 +62,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview-selection:1.1.0"
 
     //coil
-    implementation("io.coil-kt:coil:2.3.0")
+    implementation("io.coil-kt:coil:2.4.0")
 
     //kotlinx-serialization
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"

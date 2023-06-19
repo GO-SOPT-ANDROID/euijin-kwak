@@ -1,7 +1,6 @@
-package org.android.go.sopt
+package org.android.go.sopt.extension
 
 import android.view.View
-import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 
 
