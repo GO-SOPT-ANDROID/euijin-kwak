@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.android.go.sopt.data.service.kakao.KakaoService
 import org.android.go.sopt.data.service.reqres.ReqresService
+import org.android.go.sopt.data.service.sopt.SoptMusicService
 import org.android.go.sopt.data.service.sopt.SoptService
 import org.android.go.sopt.util.UrlInfo
 import retrofit2.Converter
@@ -50,6 +51,17 @@ class NetworkModule {
     fun provideKakaoService(jsonConverter:Converter.Factory, client: OkHttpClient): KakaoService {
         return Retrofit.Builder()
             .baseUrl(UrlInfo.KAKAO_BASE_URL)
+            .addConverterFactory(jsonConverter)
+            .client(client)
+            .build()
+            .create()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMusicService(jsonConverter:Converter.Factory, client: OkHttpClient): SoptMusicService {
+        return Retrofit.Builder()
+            .baseUrl(UrlInfo.SOPT_BASE_URL)
             .addConverterFactory(jsonConverter)
             .client(client)
             .build()

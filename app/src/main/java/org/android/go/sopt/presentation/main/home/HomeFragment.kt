@@ -1,6 +1,7 @@
 package org.android.go.sopt.presentation.main.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.android.go.sopt.databinding.FragmentHomeBinding
-import org.android.go.sopt.presentation.state.UIState
-import org.android.go.sopt.presentation.main.home.reqres.ReqresAdapter
+import org.android.go.sopt.presentation.main.home.music.SoptMusicAdapter
+import org.android.go.sopt.presentation.main.player.MusicFragment
+import org.android.go.sopt.presentation.main.player.dialog.AddDialog
+import org.android.go.sopt.presentation.main.player.dialog.MusicDialog
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -23,7 +26,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private var reqresAdapter: ReqresAdapter? = null
+    private var soptMusicAdapter: SoptMusicAdapter? = null
     private val viewModel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
@@ -41,34 +44,51 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         _binding = null
-        reqresAdapter = null
+        soptMusicAdapter = null
         super.onDestroyView()
     }
 
     private fun initObserve() {
-        viewModel.userListStateFlow.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED).onEach {
+        viewModel.homeStateFlow.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED).onEach {
             when (it) {
-                is UIState.UnInitialized -> {
+                is HomeState.UnInitialized -> {
+                    initView()
                     initRecyclerView()
-                    viewModel.getUsers(2)
+                    viewModel.getMusicList()
                 }
 
-                is UIState.Loading -> {}
+                is HomeState.Loading -> {}
 
-                is UIState.Success -> {
-                    reqresAdapter?.submitList(it.data.data)
+                is HomeState.SuccessGetMusicList -> {
+                    soptMusicAdapter?.submitList(it.data.musicList)
                 }
 
-                is UIState.Error -> {}
+                is HomeState.SuccessPostMusic -> {
+                    viewModel.getMusicList()
+                }
+
+                is HomeState.Error -> {
+                    Log.e("HomeFragment", "Error")
+                }
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
+    private fun initView() {
+        binding.fbAdd.setOnClickListener {
+            MusicDialog.getInstance().apply {
+                setOnItemClickListener {
+                    viewModel.postMusic(it)
+                }
+            }.let { parentFragmentManager.beginTransaction().add(it, MusicFragment.ADD_DIALOG).commitAllowingStateLoss() }
+        }
+    }
+
     private fun initRecyclerView() {
-        reqresAdapter = ReqresAdapter()
+        soptMusicAdapter = SoptMusicAdapter()
 
         binding.rvReqres.apply {
-            adapter = reqresAdapter
+            adapter = soptMusicAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
     }

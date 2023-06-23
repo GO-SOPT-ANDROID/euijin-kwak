@@ -15,6 +15,13 @@ class AddDialog: DialogFragment() {
 
     companion object {
         const val MUSIC_DATA = "MUSIC_DATA"
+        fun getInstance():AddDialog {
+            //임시 인스턴스용
+            val bundle = Bundle()
+            return AddDialog().apply {
+                arguments = bundle
+            }
+        }
     }
 
     private var currentId: Int? = null
