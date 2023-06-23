@@ -22,11 +22,12 @@ class LoginViewModel @Inject constructor(private val soptRepository: SoptReposit
         viewModelScope.launch {
             _loginStateFlow.value = UIState.Loading
             soptRepository.postLogin(SoptLoginRequest(id, password))
-            _loginStateFlow.value = soptRepository.postLogin(SoptLoginRequest(id, password))?.let {
-                UIState.Success(it)
-            } ?: kotlin.run {
-                UIState.Error
-            }
+            soptRepository.postLogin(SoptLoginRequest(id, password))
+                .onSuccess {
+                    _loginStateFlow.value = UIState.Success(it)
+                }.onFailure {
+                    _loginStateFlow.value = UIState.Error
+                }
         }
     }
 }

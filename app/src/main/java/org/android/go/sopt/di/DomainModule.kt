@@ -4,6 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import org.android.go.sopt.data.datasource.DataSource
+import org.android.go.sopt.data.datasource.DataSourceImpl
 import org.android.go.sopt.data.repository.KakaoRepositoryImpl
 import org.android.go.sopt.data.repository.MusicRepositoryImpl
 import org.android.go.sopt.data.repository.ReqresRepositoryImpl
@@ -33,5 +35,9 @@ interface DomainModule {
     @Binds
     @Singleton
     fun bindSoptRepositoryImpl(repositoryImpl: SoptRepositoryImpl): SoptRepository
+
+    @Binds
+    @Singleton
+    fun bindDataSourceImpl(dataSourceImpl: DataSourceImpl): DataSource
 
 }

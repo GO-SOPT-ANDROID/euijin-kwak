@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.android.go.sopt.R
 import org.android.go.sopt.databinding.ActivitySignUpBinding
+import org.android.go.sopt.extension.showSnack
 import org.android.go.sopt.extension.showToast
-import org.android.go.sopt.showSnack
 
 @AndroidEntryPoint
 class SignUpActivity : AppCompatActivity() {
