@@ -7,15 +7,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.selection.SelectionPredicates
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.android.go.sopt.R
 import org.android.go.sopt.databinding.FragmentMusicBinding
@@ -59,28 +60,28 @@ class MusicFragment : Fragment() {
     }
 
     private fun initObserve() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.musicState.collectLatest {
-                    when (it) {
-                        is MusicState.UnInitialized -> {
-                            initAddButton()
-                            initAdapter()
-                            initRecyclerView()
-                            viewModel.getMusicList()
-                        }
+        viewModel.musicState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED).onEach {
+            when (it) {
+                is MusicState.UnInitialized -> {
+                    initAddButton()
+                    initAdapter()
+                    initRecyclerView()
+                    viewModel.getMusicList()
+                }
 
-                        is MusicState.SuccessMusicList -> {
-                            successHandler(it.musicList)
-                        }
+                is MusicState.SuccessMusicList -> {
+                    successHandler(it.musicList)
+                }
 
-                        else -> {
-                            //TODO 다음주에 계속...
-                        }
-                    }
+                is MusicState.Loading -> {
+                    //TODO 다음주에 계속...
+                }
+
+                else -> {
+                    //TODO 다음주에 계속...
                 }
             }
-        }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private fun initAdapter() {

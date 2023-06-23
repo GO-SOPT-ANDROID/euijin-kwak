@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Title"
+        app:layout_constraintBottom_toTopOf="@id/divider"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginVertical="10dp"
+        android:background="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintBottom_toTopOf="@id/tvContents"/>
+
+    <TextView
+        android:id="@+id/tvContents"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Studio Bot에서 답변 받기
+Studio Bot과 상호 작용하기 위한 기본 인터페이스는 채팅 창입니다. 이를 사용하여 매우 간단하고 개방형 질문부터 도움이 필요한 특정 문제에 이르기까지 다양한 질문을 할 수 있습니다. 다음은 질문할 수 있는 몇 가지 예입니다. 그러나 Android 개발과 관련된 모든 주제를 자유롭게 실험해 보세요.
+
+내 앱에 카메라 지원을 어떻게 추가합니까?
+Room 데이터베이스를 만들고 싶습니다.
+javadocs의 형식을 상기시켜 주시겠습니까?
+어두운 테마란 무엇인가요?"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

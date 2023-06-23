@@ -15,16 +15,16 @@ interface SoptService {
     @GET("/info/{userId}")
     suspend fun getUserInfo(
         @Path("userId") userId: String
-    ): Response<SoptLoginResponse>
+    ): SoptLoginResponse
 
     @POST("/sign-up")
     suspend fun postSignUp(
         @Body body: SoptSignUpRequest
-    ): Response<SoptSignUpResponse>
+    ): SoptSignUpResponse
 
     @POST("/sign-in")
     suspend fun postLogin(
         @Body body: SoptLoginRequest
-    ): Response<SoptLoginResponse>
+    ): SoptLoginResponse
 
 }

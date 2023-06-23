@@ -22,7 +22,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
+        buildConfigField "String", "KAKAO_REST_API_KEY", properties["KAKAO_REST_API_KEY"]
         buildConfigField "String", "Multy_Part_BASE_URL", properties['Multy_Part_BASE_URL']
 
     }

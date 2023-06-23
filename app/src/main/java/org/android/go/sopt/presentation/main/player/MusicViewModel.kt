@@ -21,17 +21,24 @@ class MusicViewModel @Inject constructor(private val musicRepository: MusicRepos
 
     fun getMusicList() {
         viewModelScope.launch(Dispatchers.IO) {
-            musicRepository.getAll().collect {
-                val musicList = it.map {musicData-> musicData.toMusicItem() }
-                _musicState.value = MusicState.Loading
-                _musicState.value = MusicState.SuccessMusicList(musicList)
+            _musicState.value = MusicState.Loading
+            runCatching {
+                musicRepository.getAll().collect { musicDataList ->
+                    musicDataList.map { musicData ->
+                        musicData.toMusicItem()
+                    }.let { musicList ->
+                        _musicState.value = MusicState.SuccessMusicList(musicList)
+                    }
+                }
+            }.onFailure { exception ->
+                _musicState.value = MusicState.Error(exception.message ?: "Error occurred")
             }
         }
     }
 
     fun getLatestMusic() {
+        _musicState.value = MusicState.Loading
         viewModelScope.launch(Dispatchers.IO) {
-            _musicState.value = MusicState.Loading
             _musicState.value = MusicState.SuccessLatestMusic(musicRepository.getLatestMusic().toMusicItem())
         }
     }
