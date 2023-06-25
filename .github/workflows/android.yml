@@ -22,5 +22,14 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
+    - name: Add Local Properties
+      env:
+          KAKAO_REST_API_KEY: ${{ secrets.KAKAO_REST_API_KEY }}
+          Multy_Part_BASE_URL: ${{ secrets.Multy_Part_BASE_URL }}
+      run: |
+          echo KAKAO_REST_API_KEY = \"$KAKAO_REST_API_KEY\" >> ./local.properties
+          echo Multy_Part_BASE_URL=\"$Multy_Part_BASE_URL\" >> ./local.properties
+
     - name: Build with Gradle
       run: ./gradlew build
